@@ -73,5 +73,42 @@ namespace RepositoryLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        public UserLogin Login(UserLogin user)
+        {
+            try
+            {
+                //validating UserType
+                bool inputUserType = Enum.TryParse<UserTypes.User>(user.UserTypes, true, out UserTypes.User type);
+                if (inputUserType != true)
+                {
+                    throw new Exception("Invalid User Category");
+                }
+
+                //variable declared
+                string Email = user.Email;
+
+                //password encrypted
+                string Password = EncryptedPassword.EncodePasswordToBase64(user.Password);
+
+                //User category 
+                string UserType = user.UserTypes;
+
+                //Validating Login details
+                var Result = dbContext.UserDetails.Where(v => v.Email == Email && v.Password == Password && v.UserType == UserType).FirstOrDefault();
+                if (Result != null)
+                {
+                    return user;
+                }
+                else
+                {
+                    throw new Exception("Login failed");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

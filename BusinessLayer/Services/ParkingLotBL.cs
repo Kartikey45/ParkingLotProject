@@ -18,6 +18,26 @@ namespace BusinessLayer.Services
             this.parkingLot = data;
         }
 
+        public UserLogin Login(UserLogin user)
+        {
+            try
+            {
+                var Result = parkingLot.Login(user);                               
+                if (Result != null)
+                {
+                    return user;
+                }
+                else
+                {
+                    throw new Exception("Login Failed");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
         //method to register new user
         public UserDetails register(UserDetails user)
         {

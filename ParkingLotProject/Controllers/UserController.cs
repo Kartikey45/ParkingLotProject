@@ -41,7 +41,7 @@ namespace ParkingLotProject.Controllers
                 {
                     var success = true;
                     var Message = "Registration Successfull";
-                    RegistrationResponse responseData = new RegistrationResponse
+                    RegistrationResponse Data = new RegistrationResponse
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
@@ -53,7 +53,7 @@ namespace ParkingLotProject.Controllers
                     {
                         success,
                         Message,
-                        responseData
+                        Data
                     });                                                           
 
                 }
@@ -69,6 +69,42 @@ namespace ParkingLotProject.Controllers
                 var success = false;
                 var Message = "Registration Failed";
                 return BadRequest(new { success, error = e.Message, Message });
+            }
+        }
+
+        //method for user login
+        [Route("Login")]
+        [HttpPost]
+        public IActionResult LoginUser(UserLogin user)
+        {
+            try
+            {
+                UserLogin data = _BusinessLayer.Login(user);
+
+                if (data != null)
+                {
+                    LoginResponse Data = new LoginResponse
+                    {
+                        Email = user.Email,
+                       
+                    };
+                    var success = true;
+                    var Message = "Login successfull ";
+
+                    return Ok(new { success, Message, Data });                  
+                }
+                else
+                {
+                    var success = false;
+                    var Message = "Login Failed";
+                    return BadRequest(new { success, Message });                             
+                }
+            }
+            catch(Exception exception)
+            {
+                var success = false;
+                var Message = "Login Failed";
+                return BadRequest(new { success, error = exception.Message, Message });
             }
         }
     }

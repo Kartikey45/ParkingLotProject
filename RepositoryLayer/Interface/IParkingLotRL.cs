@@ -9,5 +9,8 @@ namespace RepositoryLayer.Interface
     {
         //Method to Add User
         UserDetails AddUser(UserDetails user);
+
+        //Method to login user
+        UserLogin Login(UserLogin user);
     }
 }
