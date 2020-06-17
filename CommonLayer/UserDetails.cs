@@ -16,12 +16,12 @@ namespace CommonLayer
 
         //First namee
         [Required]
-        [RegularExpression(@"^[A-Z][a-zA-Z]*$")]
+        [RegularExpression(@"^[A-Z][a-zA-Z]*$", ErrorMessage = "Enter Valid First Name")]
         public string FirstName { get; set; }
 
         //last name
         [Required]
-        [RegularExpression(@"^[A-Z][a-zA-Z]*$")]
+        [RegularExpression(@"^[A-Z][a-zA-Z]*$" , ErrorMessage = "Enter Valid Last Name")]
         public string LastName { get; set; }
 
         //Email Id

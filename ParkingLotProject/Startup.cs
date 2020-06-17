@@ -32,7 +32,8 @@ namespace ParkingLotProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddScoped<IParkingLotBL, ParkingLotBL>();
+            services.AddScoped<IParkingLotRL, ParkingLotRL>();
             services.AddDbContextPool<ParkingLotDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ParkingLotDBConnection")));
         }
 

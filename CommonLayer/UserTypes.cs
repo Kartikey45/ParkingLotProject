@@ -6,6 +6,7 @@ namespace CommonLayer
 {
     public class UserTypes
     {
+        //User type
         public enum User
         {
             Owner,
