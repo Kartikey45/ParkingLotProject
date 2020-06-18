@@ -13,5 +13,8 @@ namespace BusinessLayer.Interface
 
         //Method to login user
         UserLogin Login(UserLogin user);
+
+        //Method to Delete User record
+        object DeleteUserRecord(int UserID);
     }
 }

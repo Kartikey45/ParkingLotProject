@@ -107,5 +107,37 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, error = exception.Message, Message });
             }
         }
+
+        //Method to delete user details
+        [HttpDelete]
+        [Route("{UserID}")]
+        public IActionResult DeleteUserRecord(int UserID)
+        {
+            try
+            {
+                var data = _BusinessLayer.DeleteUserRecord(UserID);
+                bool success = false;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Deleted successfullly";
+                    return Ok(new { success, message, data });
+
+                }
+                else
+                {
+                    success = false;
+                    message = "Failed To Delete";
+                    return BadRequest(new { success, message });
+                }
+            }
+            catch(Exception exception)
+            {
+                var success = false;
+                var Message = "Failed to delete";
+                return BadRequest(new { success, error = exception.Message, Message });
+            }
+        }
     }
 }

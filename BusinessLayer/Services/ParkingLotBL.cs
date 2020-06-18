@@ -18,6 +18,30 @@ namespace BusinessLayer.Services
             this.parkingLot = data;
         }
 
+        //Method to delete User details by its ID
+        public object DeleteUserRecord(int UserID)
+        {
+            try
+            {
+                var data = parkingLot.DeleteUserRecord(UserID);
+                if (data != null)
+                {
+                    return data;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+
+            }
+        }
+
+        //Method to Login User
         public UserLogin Login(UserLogin user)
         {
             try

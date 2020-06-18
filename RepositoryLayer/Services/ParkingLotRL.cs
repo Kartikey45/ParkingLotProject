@@ -74,6 +74,33 @@ namespace RepositoryLayer.Services
             }
         }
 
+        //Method to delete User Record by ID
+        public object DeleteUserRecord(int UserID)
+        {
+            try
+            {
+                //
+                var record = dbContext.UserDetails.First(v => v.ID == UserID);
+
+                if (record != null)
+                {
+                    dbContext.UserDetails.Remove(record);
+
+                    dbContext.SaveChanges();
+
+                    return record;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
         public UserLogin Login(UserLogin user)
         {
             try
@@ -110,5 +137,7 @@ namespace RepositoryLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+
     }
 }

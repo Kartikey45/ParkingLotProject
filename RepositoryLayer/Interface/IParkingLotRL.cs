@@ -12,5 +12,8 @@ namespace RepositoryLayer.Interface
 
         //Method to login user
         UserLogin Login(UserLogin user);
+
+        //Method to Delete User Record
+        object DeleteUserRecord(int UserID);
     }
 }
