@@ -15,5 +15,8 @@ namespace RepositoryLayer.Interface
 
         //Method to Delete User Record
         object DeleteUserRecord(int UserID);
+
+        //Method to Update User Record by its Id
+        Object UpdateUserRecord(int UserId, UserDetails details);
     }
 }

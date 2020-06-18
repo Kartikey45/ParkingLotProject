@@ -79,9 +79,8 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                //
+                //validating the given User id exists in database
                 var record = dbContext.UserDetails.First(v => v.ID == UserID);
-
                 if (record != null)
                 {
                     dbContext.UserDetails.Remove(record);
@@ -138,6 +137,47 @@ namespace RepositoryLayer.Services
             }
         }
 
+        //Method to update user record by id
+        public object UpdateUserRecord(int UserId, UserDetails details)
+        {
+            try
+            {
+                //variables declared 
+                string Email = details.Email;
+                string Password = EncryptedPassword.EncodePasswordToBase64(details.Password);
 
+                //validating Email and Id
+                var Validation = dbContext.UserDetails.Where(u => u.Email == Email && u.ID != UserId).FirstOrDefault();
+                if (Validation != null)
+                {
+                    throw new Exception("User Already Exist");
+                }
+                
+                //validating and updating user id records in the database
+                var record = (from x in dbContext.UserDetails
+                               where x.ID == UserId
+                               select x).First();
+                if (record != null)
+                {
+                    record.FirstName = details.FirstName;
+                    record.LastName = details.LastName;
+                    record.Email = details.Email;
+                    record.Password = Password;
+                    record.UserType = details.UserType;
+                    record.ModifiedDate = DateTime.Now;
+                    dbContext.SaveChanges();
+                    return record;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

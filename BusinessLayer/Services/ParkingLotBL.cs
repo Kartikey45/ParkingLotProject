@@ -84,5 +84,26 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        //Method to update user record by Id
+        public object UpdateUserRecord(int UserId, UserDetails details)
+        {
+            try
+            {
+                var updateData = parkingLot.UpdateUserRecord(UserId, details);
+                if (updateData != null)
+                {
+                    return updateData;
+                }
+                else
+                {
+                    throw new Exception("Record not updated");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

@@ -139,5 +139,41 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, error = exception.Message, Message });
             }
         }
+
+        //Method to Update user data by UserId
+        [Route("{UserId}")]
+        [HttpPut]
+        public IActionResult UpdateUserRecord(int UserId, UserDetails details)
+        {
+            try
+            {
+
+                var data = _BusinessLayer.UpdateUserRecord(UserId, details);
+
+                if (!data.Equals(null))
+                {
+                    var success = true;
+                    var Message = "Updated Successfull";
+                    return Ok(new
+                    {
+                        success,
+                        Message,
+                        data
+                    });
+                }
+                else
+                {
+                    var success = false;
+                    var Message = "Failed to update data";
+                    return this.BadRequest(new { success, Message });
+                }
+            }
+            catch(Exception exception)
+            {
+                var success = false;
+                var Message = "Failed to update data";
+                return BadRequest(new { success, error = exception.Message, Message });
+            }
+        }
     }
 }

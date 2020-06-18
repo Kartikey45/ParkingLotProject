@@ -16,5 +16,8 @@ namespace BusinessLayer.Interface
 
         //Method to Delete User record
         object DeleteUserRecord(int UserID);
+
+        //Method to update User record by Id
+        Object UpdateUserRecord(int UserId, UserDetails details);
     }
 }
