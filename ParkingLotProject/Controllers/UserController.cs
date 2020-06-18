@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommonLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.DBContext;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParkingLotProject.Controllers
 {
@@ -26,6 +31,7 @@ namespace ParkingLotProject.Controllers
             _BusinessLayer = _BusinessDependencyInjection;
             this._configuration = _configuration;
             this.dBContext = dBContext;
+            this._configuration = _configuration;
         }
 
         //method to register new user
@@ -90,8 +96,8 @@ namespace ParkingLotProject.Controllers
                     };
                     var success = true;
                     var Message = "Login successfull ";
-
-                    return Ok(new { success, Message, Data });                  
+                    string JsonToken = CreateToken(data , "Login");
+                    return Ok(new { success, Message, Data, JsonToken });                  
                 }
                 else
                 {
@@ -109,6 +115,7 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to delete user details
+        [Authorize(Roles = "Owner")]
         [HttpDelete]
         [Route("{UserID}")]
         public IActionResult DeleteUserRecord(int UserID)
@@ -141,6 +148,7 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to Update user data by UserId
+        [Authorize(Roles = "Owner")]
         [Route("{UserId}")]
         [HttpPut]
         public IActionResult UpdateUserRecord(int UserId, UserDetails details)
@@ -173,6 +181,33 @@ namespace ParkingLotProject.Controllers
                 var success = false;
                 var Message = "Failed to update data";
                 return BadRequest(new { success, error = exception.Message, Message });
+            }
+        }
+
+        //Method to create JWT token
+        private string CreateToken(UserLogin responseData, string type)
+        {
+            try
+            {
+                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>();
+                //claims.Add(new Claim(ClaimTypes.Role, type));
+                claims.Add(new Claim(ClaimTypes.Role, responseData.UserTypes));
+                claims.Add(new Claim("Email", responseData.Email.ToString()));
+                claims.Add(new Claim("Password", responseData.Password.ToString()));
+
+                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Issuer"],
+                    claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCreds);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
