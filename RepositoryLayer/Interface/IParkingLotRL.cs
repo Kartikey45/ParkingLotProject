@@ -18,5 +18,7 @@ namespace RepositoryLayer.Interface
 
         //Method to Update User Record by its Id
         Object UpdateUserRecord(int UserId, UserDetails details);
+
+        //Method to View All the records
     }
 }
