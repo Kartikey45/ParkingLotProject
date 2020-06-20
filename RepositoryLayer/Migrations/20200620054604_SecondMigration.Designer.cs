@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer.DBContext;
 
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(ParkingLotDbContext))]
-    partial class ParkingLotDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200620054604_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,60 +21,33 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CommonLayer.ParkingModel.ParkingLotDetails", b =>
+            modelBuilder.Entity("CommonLayer.ParkingDetails", b =>
                 {
                     b.Property<int>("ParkingID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("DriverName")
-                        .IsRequired();
+                    b.Property<double>("ChargePerHr");
 
-                    b.Property<DateTime>("ParkingDate");
+                    b.Property<DateTime>("EntryTime");
 
-                    b.Property<string>("ParkingSlot")
-                        .IsRequired();
+                    b.Property<DateTime>("ExitTime");
 
-                    b.Property<string>("ParkingUserCategory");
+                    b.Property<int>("ParkingSlotNo");
 
-                    b.Property<string>("Status");
+                    b.Property<bool>("ParkingStatus");
 
-                    b.Property<string>("VehicalBrand")
-                        .IsRequired();
+                    b.Property<string>("VehicalBrand");
 
-                    b.Property<string>("VehicalColor")
-                        .IsRequired();
+                    b.Property<string>("VehicalColor");
 
-                    b.Property<string>("VehicleNumber")
-                        .IsRequired();
+                    b.Property<string>("VehicalNo");
 
-                    b.Property<string>("VehicleOwnerName")
-                        .IsRequired();
+                    b.Property<string>("VehicalParkingUser");
 
                     b.HasKey("ParkingID");
 
-                    b.ToTable("ParkingLotDetails");
-                });
-
-            modelBuilder.Entity("CommonLayer.ParkingModel.VehicalUnpark", b =>
-                {
-                    b.Property<int>("VehicleUnParkID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ParkingID");
-
-                    b.Property<string>("Status");
-
-                    b.Property<double>("TotalAmount");
-
-                    b.Property<double>("TotalTime");
-
-                    b.Property<DateTime>("UnParkDate");
-
-                    b.HasKey("VehicleUnParkID");
-
-                    b.ToTable("VehicleUnpark");
+                    b.ToTable("ParkingDetails");
                 });
 
             modelBuilder.Entity("CommonLayer.UserDetails", b =>

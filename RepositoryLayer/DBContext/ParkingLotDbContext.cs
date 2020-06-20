@@ -1,4 +1,5 @@
 ﻿using CommonLayer;
+using CommonLayer.ParkingModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,9 @@ namespace RepositoryLayer.DBContext
         }
 
         public DbSet<UserDetails> UserDetails { get; set; }
+
+        public DbSet<ParkingLotDetails> ParkingLotDetails { get; set; }
+
+        public DbSet<VehicalUnpark> VehicleUnpark { get; set; }
     }
 }

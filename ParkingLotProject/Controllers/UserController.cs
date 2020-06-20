@@ -117,7 +117,7 @@ namespace ParkingLotProject.Controllers
         //Method to delete user details
         [Authorize(Roles = "Owner")]
         [HttpDelete]
-        [Route("{UserID}")]
+        [Route("")]
         public IActionResult DeleteUserRecord(int UserID)
         {
             try
@@ -149,7 +149,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to Update user data by UserId
         [Authorize(Roles = "Owner")]
-        [Route("{UserId}")]
+        [Route("")]
         [HttpPut]
         public IActionResult UpdateUserRecord(int UserId, UserDetails details)
         {
