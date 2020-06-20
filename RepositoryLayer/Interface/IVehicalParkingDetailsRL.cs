@@ -12,6 +12,8 @@ namespace RepositoryLayer.Interface
         // Parking Lot Status (Full Or Not)
         object ParkingLotStatus();
 
+        // Delete Car Data
+        object DeleteCarParkingDetails(int ParkingID);
 
     }
 }

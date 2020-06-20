@@ -23,6 +23,30 @@ namespace BusinessLayer.Services
             parkingLotRL = _parkingLotRL;
         }
 
+        public object DeleteCarParkingDetails(int ParkingID)
+        {
+            try
+            {
+                var data = parkingLotRL.DeleteCarParkingDetails(ParkingID);
+                if (data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+
+            }
+        }
+
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {
             try

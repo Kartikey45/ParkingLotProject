@@ -162,6 +162,35 @@ namespace RepositoryLayer.Services
             }
         }
 
-    
+        public object DeleteCarParkingDetails(int ParkingID)
+        {
+            try
+            {
+                //Find the Car Parking  For Specific Receipt Number
+                var details = dataBase.ParkingLotDetails.FirstOrDefault(x => x.ParkingID == ParkingID);
+
+                if (details != null)
+                {
+                    //Delete
+                    dataBase.ParkingLotDetails.Remove(details);
+
+                    //Commit the transaction
+                    dataBase.SaveChanges();
+                    return "Data Deleted Successfully";
+                }
+                else
+                {
+                    // If Data Not Found
+                    //   return ReceiptNumber + " This Receipt Number Not Found";
+                    throw new Exception();
+                }
+
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

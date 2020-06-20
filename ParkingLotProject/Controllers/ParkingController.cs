@@ -54,5 +54,34 @@ namespace ParkingLotProject.Controllers
             }
 
         }
+
+        [HttpDelete]
+        public ActionResult DeleteCarParkingDetails(int ParkingID)
+        {
+            try
+            {
+                var data = parkingLotBusiness.DeleteCarParkingDetails(ParkingID);
+                bool success = false;
+                string message;
+                if (data == null)
+                {
+                    success = false;
+                    message = "Fail To Delete";
+                    return BadRequest(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Delete";
+                    return Ok(new { success, message, data });
+                }
+            }
+            catch (Exception e)
+            {
+                bool success = false;
+                string message = e.Message;
+                return BadRequest(new { success, message });
+            }
+        }
     }
 }

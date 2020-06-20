@@ -11,5 +11,8 @@ namespace BusinessLayer.Interface
 
         // Parking Lot Status (Full OR Not)
         object ParkingLotStatus();
+
+        // Delete Car Details
+        object DeleteCarParkingDetails(int ParkingID);
     }
 }
