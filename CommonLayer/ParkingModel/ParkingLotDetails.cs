@@ -34,7 +34,6 @@ namespace CommonLayer.ParkingModel
 
         //[Required(ErrorMessage = "Wrong Field Name Please Write Parking_Slot")]
         [RegularExpression(@"^([A-Z]){1,2}$", ErrorMessage = "Parking Slot A To Z")]
-        [Required(ErrorMessage = "Wrong Field Name Please Write Parking_Slot")]
         public string ParkingSlot { get; set; }
 
         public string ParkingUserCategory { get; set; }

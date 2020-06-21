@@ -7,13 +7,16 @@ namespace RepositoryLayer.Interface
 {
     public interface IVehicalParkingDetailsRL
     {
+        //Car park
         ParkingLotDetails ParkingCarInLot(ParkingLotDetails details);
 
-        // Parking Lot Status (Full Or Not)
+        // Parking Lot Status 
         object ParkingLotStatus();
 
-        // Delete Car Data
+        // Delete Car parking Details
         object DeleteCarParkingDetails(int ParkingID);
 
+        // Car UnPark 
+        object CarUnPark(VehicalUnpark details);
     }
 }

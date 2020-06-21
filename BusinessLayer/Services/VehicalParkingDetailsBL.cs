@@ -23,6 +23,32 @@ namespace BusinessLayer.Services
             parkingLotRL = _parkingLotRL;
         }
 
+        public object CarUnPark(VehicalUnpark details)
+        {
+            try
+            {
+                var data = parkingLotRL.CarUnPark(details);
+
+                // Check IF Data Equal To Null 
+                if (data == null)
+                {
+                    // IF Data Null Throw Exception
+                    throw new Exception();
+                }
+                else
+                {
+                    // Return Data
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+            }
+        }
+
+        //Method to delete parking details
         public object DeleteCarParkingDetails(int ParkingID)
         {
             try
@@ -47,40 +73,19 @@ namespace BusinessLayer.Services
             }
         }
 
+        //Method to Add car park details 
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {
             try
             {
                 var data = parkingLotRL.ParkingCarInLot(details);
-                var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A").Count();
-                var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B").Count();
-                var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C").Count();
-                var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D").Count();
-                if (condition != Limit.ParkingSlotA)
+                if(data == null)
                 {
-                    // Return Data
-                    details.ParkingSlot = "A";
-                    return data;
-
-                }
-                else if (condition1 != Limit.ParkingSlotB)
-                {
-                    details.ParkingSlot = "B";
-                    return data;
-                }
-                else if (condition2 != Limit.ParkingSlotC)
-                {
-                    details.ParkingSlot = "C";
-                    return data;
-                }
-                else if (condition3 != Limit.ParkingSlotD)
-                {
-                    details.ParkingSlot = "D";
-                    return data;
+                    throw new Exception();
                 }
                 else
                 {
-                    throw new Exception();
+                    return data;
                 }
             }
             catch(Exception exception)
@@ -89,6 +94,7 @@ namespace BusinessLayer.Services
             }
         }
 
+        //Method to return parking lot status
         public object ParkingLotStatus()
         {
             try

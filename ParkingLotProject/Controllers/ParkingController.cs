@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
+using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,7 @@ namespace ParkingLotProject.Controllers
 
         }
 
+        //Method to Delete parking details
         [HttpDelete]
         public ActionResult DeleteCarParkingDetails(int ParkingID)
         {
@@ -81,6 +83,71 @@ namespace ParkingLotProject.Controllers
                 bool success = false;
                 string message = e.Message;
                 return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to return Parking status
+        [HttpGet]
+        [Route("ParkingStatus")]
+        public ActionResult ParkingLotStatus()
+        {
+            try
+            {
+                //Instance of ParkingLimit
+                ParkingLimit Limit = new ParkingLimit();
+
+                var data = parkingLotBusiness.ParkingLotStatus();
+                bool success;
+                string message;
+                if (data.Equals(Limit.TotalParkingLimit))
+                {
+                    success = false;
+                    message = "Parking Full";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Parking Avaliable";
+                    return Ok(new { success, message, data });
+                }
+            }
+            catch (Exception e)
+            {
+                bool success = false;
+                string message = e.Message;
+                return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to unpark the car
+        [HttpPost]
+        [Route("UnPark")]
+        public ActionResult CarUnPark(VehicalUnpark details)
+        {
+            try
+            {
+                var data = parkingLotBusiness.CarUnPark(details);
+                bool success;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Successfully UnPark";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    success = false;
+                    message = "Fail To UnPark";
+                    return Ok(new { success, message });
+                }
+            }
+            catch (Exception e)
+            {
+                bool sucess = false;
+                string message = e.Message;
+                return BadRequest(new { sucess, message });
             }
         }
     }

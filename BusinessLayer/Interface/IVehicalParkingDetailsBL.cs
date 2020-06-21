@@ -14,5 +14,8 @@ namespace BusinessLayer.Interface
 
         // Delete Car Details
         object DeleteCarParkingDetails(int ParkingID);
+
+        // Car UnPark
+        object CarUnPark(VehicalUnpark details);
     }
 }

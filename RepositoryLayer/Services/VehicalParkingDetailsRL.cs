@@ -20,11 +20,13 @@ namespace RepositoryLayer.Services
             dataBase = _dataBase;
         }
 
+        //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {
             var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
 
-            if(!condition.Equals(10))
+            //check if parking lot is full or empty
+            if(!condition.Equals(Limit.TotalParkingLimit))
             {
                 try
                 {
@@ -62,7 +64,7 @@ namespace RepositoryLayer.Services
                     {
                         // If Data Avaliable With Park Status Return This Message
                         //  return details.Vehicle_Number + " This Car Data Available With Park Status";
-                        throw new Exception("Already Park " + details.VehicleNumber + " This Car Number");
+                        throw new Exception(details.VehicleNumber + "  Vehical Number already parked in the Lot ");
                     }
                 }
                 catch(Exception exception)
@@ -76,92 +78,84 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public object ParkingLotStatus()
+        //Method to Unpark the car
+        public object CarUnPark(VehicalUnpark details)
         {
             try
             {
-                // Count How Many Car Is Park
-                return dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
-                // Reurn Count
+
+                bool condition1 = dataBase.VehicleUnpark.Any(parkingDetails => parkingDetails.ParkingID == details.ParkingID);
+                if (!condition1)
+                {
+                    // Quary For Calculating Total Time
+                    double total = dataBase.ParkingLotDetails
+                        .Where(p => p.ParkingID == details.ParkingID)
+                        .Select(i => (DateTime.Now.Subtract(i.ParkingDate).TotalMinutes)).Sum();
+
+                    // Current Date Time
+                    details.UnParkDate = DateTime.Now;
+
+                    // Total Amount Calculating With Total Time
+                    details.TotalAmount = total * 10;
+
+                    // Total Time In Minutes
+                    details.TotalTime = total;
+
+                    // Status
+                    details.Status = "UnPark";
+
+                    // Finding Data With Receipt Number
+                    var Status = dataBase.ParkingLotDetails.Find(details.ParkingID);
+
+                    // Changing Status Park To UnPark
+                    Status.Status = "UnPark";
+
+                    // Undate Changing Status
+                    dataBase.ParkingLotDetails.Update(Status);
+
+                    // Adding Data In VehicleUnPark Table
+                    dataBase.Add(details);
+
+                    // Save Both Tables (VehicleUnPark And ParkingDetail)
+                    dataBase.SaveChanges();
+
+                    // Quary For Return Data
+                    var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                where parkingDetails.ParkingID == details.ParkingID
+                                from q in dataBase.VehicleUnpark
+                                select new
+                                {
+                                    parkingDetails.ParkingID,
+                                    parkingDetails.VehicleOwnerName,
+                                    parkingDetails.VehicalBrand,
+                                    parkingDetails.VehicalColor,
+                                    parkingDetails.DriverName,
+                                    parkingDetails.ParkingSlot,
+                                    parkingDetails.VehicleNumber,
+                                    parkingDetails.ParkingDate,
+                                    details.UnParkDate,
+                                    details.TotalTime,
+                                    details.TotalAmount
+
+                                }).FirstOrDefault();
+
+                    // Return Data
+                    return data;
+                }
+                else
+                {
+                    return (details.ParkingID + "  Parking Id Already UnParked");
+                }
+
             }
-            catch (Exception e)
+            catch(Exception)
             {
-                // Exception
-                throw new Exception(e.Message);
+                throw new Exception("Parking ID not found");
             }
         }
 
-        public string checkValidParkingSlot(string parkingSlot)
-        {
-            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park").Count();
-            var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B" && parkingDetails.Status == "Park").Count();
-            var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C" && parkingDetails.Status == "Park").Count();
-            var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D" && parkingDetails.Status == "Park").Count();
-            if (condition2 != Limit.ParkingSlotA)
-            {
-                return parkingSlot = "A";
-            }
-            else if (condition1 != Limit.ParkingSlotB)
-            {
-                return parkingSlot = "B";
-            }
-            else if (condition != Limit.ParkingSlotC)
-            {
-                return parkingSlot = "C";
-            }
-            else if (condition3 != Limit.ParkingSlotD)
-            {
-                return parkingSlot = "D";
-            }
-            else
-            {
-                throw new Exception("Parking Is Full");
-            }
-        }
 
-        public string checkPakingSlotForHandicap(string parkingSlot)
-        {
-            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park").Count();
-            var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B" && parkingDetails.Status == "Park").Count();
-            var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C" && parkingDetails.Status == "Park").Count();
-            var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D" && parkingDetails.Status == "Park").Count();
-            if (condition != Limit.ParkingSlotA)
-            {
-                return parkingSlot = "A";
-            }
-            else
-            if (condition1 != Limit.ParkingSlotB)
-            {
-                return parkingSlot = "B";
-            }
-            else if (condition2 != Limit.ParkingSlotC)
-            {
-                return parkingSlot = "C";
-            }
-            else if (condition3 != Limit.ParkingSlotD)
-            {
-                return parkingSlot = "D";
-            }
-            else
-            {
-                throw new Exception("Parking Is Full");
-            }
-        }
-
-        public string ParkingCategory(string category)
-        {
-            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park" && parkingDetails.ParkingUserCategory == "Handicap").Count();
-            if (category == "Handicap")
-            {
-                // Return Data
-                return category = "Handicap";
-            }
-            else
-            {
-                return category = "Normal";
-            }
-        }
-
+        //Method to delete parking details
         public object DeleteCarParkingDetails(int ParkingID)
         {
             try
@@ -192,5 +186,96 @@ namespace RepositoryLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        //Method to return Parking lot status
+        public object ParkingLotStatus()
+        {
+            try
+            {
+                // Count and how Many Cars are Parked
+                return dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
+                
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+            }
+        }
+
+        //Method to check empty parking slot
+        public string checkValidParkingSlot(string parkingSlot)
+        {
+            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park").Count();
+            var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B" && parkingDetails.Status == "Park").Count();
+            var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C" && parkingDetails.Status == "Park").Count();
+            var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D" && parkingDetails.Status == "Park").Count();
+            if (condition != Limit.ParkingSlotA)
+            {
+                return parkingSlot = "A";
+            }
+            else if (condition1 != Limit.ParkingSlotB)
+            {
+                return parkingSlot = "B";
+            }
+            else if (condition2 != Limit.ParkingSlotC)
+            {
+                return parkingSlot = "C";
+            }
+            else if (condition3 != Limit.ParkingSlotD)
+            {
+                return parkingSlot = "D";
+            }
+            else
+            {
+                throw new Exception("Parking Is Full");
+            }
+        }
+
+        //Method to check slot for handicap person
+        public string checkPakingSlotForHandicap(string parkingSlot)
+        {
+            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park").Count();
+            var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B" && parkingDetails.Status == "Park").Count();
+            var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C" && parkingDetails.Status == "Park").Count();
+            var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D" && parkingDetails.Status == "Park").Count();
+            if (condition != Limit.ParkingSlotA)
+            {
+                return parkingSlot = "A";
+            }
+            else
+            if (condition1 != Limit.ParkingSlotB)
+            {
+                return parkingSlot = "B";
+            }
+            else if (condition2 != Limit.ParkingSlotC)
+            {
+                return parkingSlot = "C";
+            }
+            else if (condition3 != Limit.ParkingSlotD)
+            {
+                return parkingSlot = "D";
+            }
+            else
+            {
+                throw new Exception("Parking Is Full");
+            }
+        }
+
+        //method to add handicap or normal person in database
+        public string ParkingCategory(string category)
+        {
+            var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "A" && parkingDetails.Status == "Park" && parkingDetails.ParkingUserCategory == "Handicap").Count();
+            if (category == "Handicap")
+            {
+                // Return Data
+                return category = "Handicap";
+            }
+            else
+            {
+                return category = "Normal";
+            }
+        }
+
     }
 }
