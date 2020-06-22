@@ -67,6 +67,7 @@ namespace BusinessLayer.Services
         {
             try
             {
+
                 string Encrypted = user.Password;
                 user.Password = EncryptedPassword.EncodePasswordToBase64(Encrypted);
                 var Result = parkingLot.AddUser(user);

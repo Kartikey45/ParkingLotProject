@@ -23,7 +23,7 @@ namespace ParkingLotProject.Controllers
         //references of layers
         readonly IUserBL _BusinessLayer;
         private readonly IConfiguration _configuration;
-        private ParkingLotDbContext dBContext;
+        //private ParkingLotDbContext dBContext;
 
         //constructor
         public UserController(IUserBL _BusinessDependencyInjection, IConfiguration _configuration)
@@ -31,7 +31,6 @@ namespace ParkingLotProject.Controllers
             _BusinessLayer = _BusinessDependencyInjection;
             this._configuration = _configuration;
             //this.dBContext = dBContext;
-            this._configuration = _configuration;
         }
 
         //method to register new user
@@ -67,7 +66,7 @@ namespace ParkingLotProject.Controllers
                 {
                     var success = false;
                     var Message = "Registration Failed";
-                    return this.BadRequest(new { success, Message });
+                    return this.Ok(new { success, Message });
                 }
             }
             catch (Exception e)
@@ -103,7 +102,7 @@ namespace ParkingLotProject.Controllers
                 {
                     var success = false;
                     var Message = "Login Failed";
-                    return BadRequest(new { success, Message });                             
+                    return Ok(new { success, Message });                             
                 }
             }
             catch(Exception exception)
@@ -136,7 +135,7 @@ namespace ParkingLotProject.Controllers
                 {
                     success = false;
                     message = "Failed To Delete";
-                    return BadRequest(new { success, message });
+                    return Ok(new { success, message });
                 }
             }
             catch(Exception exception)
@@ -173,7 +172,7 @@ namespace ParkingLotProject.Controllers
                 {
                     var success = false;
                     var Message = "Failed to update data";
-                    return this.BadRequest(new { success, Message });
+                    return this.Ok(new { success, Message });
                 }
             }
             catch(Exception exception)

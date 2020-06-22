@@ -116,6 +116,7 @@ namespace RepositoryLayer.Services
 
                 //password encrypted
                 string Password = EncryptedPassword.EncodePasswordToBase64(user.Password);
+                
 
                 //User category 
                 string UserType = user.UserTypes;

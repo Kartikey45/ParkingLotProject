@@ -32,6 +32,7 @@ namespace RepositoryLayer.Services
                 {
                     // Conditions 
                     bool condition1 = dataBase.ParkingLotDetails.Any(parkingDetails => parkingDetails.VehicleNumber == details.VehicleNumber);
+                    //bool condition2 = dataBase.ParkingLotDetails.Any (parkingDetails => parkingDetails.VehicleNumber == details.VehicleNumber && parkingDetails.Status == "UnPark");
                     var condition2 = (from parkingDetails in dataBase.ParkingLotDetails where parkingDetails.VehicleNumber == details.VehicleNumber select parkingDetails.Status == "UnPark").LastOrDefault();
                     // Check Same Data Available Or Not By Vehicale Number
                     if (!condition1)
@@ -63,7 +64,7 @@ namespace RepositoryLayer.Services
                     else
                     {
                         // If Data Avaliable With Park Status Return This Message
-                        //  return details.Vehicle_Number + " This Car Data Available With Park Status";
+                        
                         throw new Exception(details.VehicleNumber + "  Vehical Number already parked in the Lot ");
                     }
                 }
