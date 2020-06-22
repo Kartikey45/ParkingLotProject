@@ -7,13 +7,13 @@ using System.Text;
 
 namespace BusinessLayer.Services
 {
-    public class ParkingLotBL : IParkingLotBL
+    public class UserBL : IUserBL
     {
         //reference of repository layer
-        private IParkingLotRL parkingLot;
+        private IUserRL parkingLot;
 
         //constructor 
-        public ParkingLotBL(IParkingLotRL data)
+        public UserBL(IUserRL data)
         {
             this.parkingLot = data;
         }

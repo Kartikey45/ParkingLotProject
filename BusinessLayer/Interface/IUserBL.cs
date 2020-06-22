@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLayer.Interface
 {
-    public interface IParkingLotBL
+    public interface IUserBL
     {
 
         //Method to register User

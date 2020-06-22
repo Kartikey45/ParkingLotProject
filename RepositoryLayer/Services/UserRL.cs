@@ -8,13 +8,13 @@ using System.Text;
 
 namespace RepositoryLayer.Services
 {
-    public class ParkingLotRL : IParkingLotRL
+    public class UserRL : IUserRL
     {
         //db context reference
         private ParkingLotDbContext dbContext;
 
         //Constructor
-        public ParkingLotRL(ParkingLotDbContext dbContext)
+        public UserRL(ParkingLotDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

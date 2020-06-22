@@ -21,16 +21,16 @@ namespace ParkingLotProject.Controllers
     public class UserController : ControllerBase
     {
         //references of layers
-        readonly IParkingLotBL _BusinessLayer;
+        readonly IUserBL _BusinessLayer;
         private readonly IConfiguration _configuration;
         private ParkingLotDbContext dBContext;
 
         //constructor
-        public UserController(IParkingLotBL _BusinessDependencyInjection, IConfiguration _configuration, ParkingLotDbContext dBContext)
+        public UserController(IUserBL _BusinessDependencyInjection, IConfiguration _configuration)
         {
             _BusinessLayer = _BusinessDependencyInjection;
             this._configuration = _configuration;
-            this.dBContext = dBContext;
+            //this.dBContext = dBContext;
             this._configuration = _configuration;
         }
 

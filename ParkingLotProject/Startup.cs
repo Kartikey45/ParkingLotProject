@@ -39,8 +39,8 @@ namespace ParkingLotProject
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IVehicalParkingDetailsRL, VehicalParkingDetailsRL>();
             services.AddScoped<IVehicalParkingDetailsBL, VehicalParkingDetailsBL>();
-            services.AddScoped<IParkingLotBL, ParkingLotBL>();
-            services.AddScoped<IParkingLotRL, ParkingLotRL>();
+            services.AddScoped<IUserBL, UserBL>();
+            services.AddScoped<IUserRL, UserRL>();
             services.AddDbContextPool<ParkingLotDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ParkingLotDBConnection")));
 
             //JWT Autentication applied
