@@ -193,8 +193,9 @@ namespace RepositoryLayer.Services
             try
             {
                 // Count and how Many Cars are Parked
-                return dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
-                
+                double NumberOfParkedVehical = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
+
+                return ( NumberOfParkedVehical + "  Vehicals are parked in Parking Lot");
             }
             catch (Exception e)
             {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +38,7 @@ namespace ParkingLotProject.Controllers
                 {
                     success = false;
                     message = "Parking Lot is Full";
-                    return BadRequest(new { success, message });
+                    return Ok(new { success, message });
                 }
                 else
                 {
@@ -58,6 +59,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to Delete parking details
         [HttpDelete]
+        [Authorize(Roles = "Owner")]
         public ActionResult DeleteCarParkingDetails(int ParkingID)
         {
             try
@@ -69,7 +71,7 @@ namespace ParkingLotProject.Controllers
                 {
                     success = false;
                     message = "Fail To Delete";
-                    return BadRequest(new { success, message });
+                    return Ok(new { success, message });
                 }
                 else
                 {
@@ -88,7 +90,8 @@ namespace ParkingLotProject.Controllers
 
         //Method to return Parking status
         [HttpGet]
-        [Route("ParkingStatus")]
+        [Route("Status")]
+        [Authorize(Roles = "Owner,Security")]
         public ActionResult ParkingLotStatus()
         {
             try
