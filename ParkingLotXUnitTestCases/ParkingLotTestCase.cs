@@ -209,6 +209,46 @@ namespace ParkingLotXUnitTestCases
             // Assert
             Assert.IsType<BadRequestObjectResult>(badRequest);
         }
+
+        [Fact]
+        public void GetAllParkingDetails_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetAllParkingCarsDetails();
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetAllUnparkedCarsDetails_ReturnsOkResult()
+        {
+            // Act
+            var okResult = parkingController.GetAllUnParkedCarDetail();
+
+            // Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void DeleteUnparkHistoryByID_ReturnsOKResult()
+        {
+            // Act
+            var okResult = parkingController.DeleteUnparkHistoryByID(6);
+
+            // Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void DeleteUnparkHistoryByID_ReturnsBadRequest()
+        {
+            // Act
+            var badRequest = parkingController.DeleteUnparkHistoryByID(125);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(badRequest);
+        }
     }
 }
 

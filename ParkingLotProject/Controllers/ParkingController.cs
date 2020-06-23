@@ -125,7 +125,7 @@ namespace ParkingLotProject.Controllers
         [HttpDelete]
         [Route("UnparkHistory")]
         [Authorize(Roles = "Owner")]
-        public IActionResult DeleteUnparkHistory(int UnparkCarId)
+        public IActionResult DeleteUnparkHistoryByID(int UnparkCarId)
         {
             try
             {
