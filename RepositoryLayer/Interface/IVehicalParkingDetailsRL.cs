@@ -18,5 +18,16 @@ namespace RepositoryLayer.Interface
 
         // Car UnPark 
         object CarUnPark(VehicalUnpark details);
+
+        // Get All Parking Cars Details
+        List<ParkingLotDetails> GetAllParkingCarsDetails();
+
+        /*
+        // Get All UnPark Car Details
+        object GetUnParkCarDetail();
+        */
+
+        // Method to delete Unpark car details
+        object DeleteUnparkCarDetails(int UnparkID);
     }
 }

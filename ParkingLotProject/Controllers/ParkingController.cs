@@ -22,6 +22,37 @@ namespace ParkingLotProject.Controllers
             parkingLotBusiness = _parkingLotBusiness;
         }
 
+        //Method to get all car parking details
+        [HttpGet]
+        [Authorize(Roles = "Owner, Police")]
+        public ActionResult GetAllParkingCarsDetails()
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetAllParkingCarsDetails();
+                bool success;
+                string message;
+                if (data == null)
+                {
+                    success = false;
+                    message = "Failed to Get All Car Parking Details";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfull to Get All Car Parking Details";
+                    return Ok(new { success, message, data });
+                }
+            }
+            catch (Exception e)
+            {
+                bool success = false;
+                string message = e.Message;
+                return BadRequest(new { success, message });
+            }
+        }
+
         //Method to park the car in parking lot
         [HttpPost]
         [Route("Park")]
@@ -59,6 +90,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to Delete parking details
         [HttpDelete]
+        [Route("Park")]
         [Authorize(Roles = "Owner")]
         public ActionResult DeleteCarParkingDetails(int ParkingID)
         {
@@ -70,13 +102,13 @@ namespace ParkingLotProject.Controllers
                 if (data == null)
                 {
                     success = false;
-                    message = "Fail To Delete";
+                    message = "Failed To Delete";
                     return Ok(new { success, message });
                 }
                 else
                 {
                     success = true;
-                    message = "Delete";
+                    message = "Deleted successfully";
                     return Ok(new { success, message, data });
                 }
             }
@@ -87,6 +119,40 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, message });
             }
         }
+
+
+        //Method to delete Unpark car details
+        [HttpDelete]
+        [Route("Unpark")]
+        [Authorize(Roles = "Owner")]
+        public IActionResult DeleteUnParkedCarDetails(int UnparkCarId)
+        {
+            try
+            {
+                var data = parkingLotBusiness.DeleteUnparkCarDetails(UnparkCarId);
+                bool success = false;
+                string message;
+                if (data == null)
+                {
+                    success = false;
+                    message = "Failed To Delete";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Deleted Successfully";
+                    return Ok(new { success, message, data });
+                }
+            }
+            catch (Exception e)
+            {
+                bool success = false;
+                string message = e.Message;
+                return BadRequest(new { success, message });
+            }
+        }
+
 
         //Method to return Parking status
         [HttpGet]

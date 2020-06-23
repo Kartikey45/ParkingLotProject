@@ -15,7 +15,13 @@ namespace BusinessLayer.Interface
         // Delete Car Details
         object DeleteCarParkingDetails(int ParkingID);
 
+        // Method to delete Unpark car details
+        object DeleteUnparkCarDetails(int UnparkVehicalID);
+
         // Car UnPark
         object CarUnPark(VehicalUnpark details);
+
+        // Get All Parking Details
+        List<ParkingLotDetails> GetAllParkingCarsDetails();
     }
 }

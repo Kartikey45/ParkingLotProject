@@ -23,6 +23,33 @@ namespace BusinessLayer.Services
             parkingLotRL = _parkingLotRL;
         }
 
+        //Method to show all parked cars details
+        public List<ParkingLotDetails> GetAllParkingCarsDetails()
+        {
+            try
+            {
+                var data = parkingLotRL.GetAllParkingCarsDetails();
+                // Check IF Data Equal To Null 
+                if (data == null)
+                {
+                    // IF Data Null Throw Exception
+                    throw new Exception();
+                }
+                else
+                {
+                    // Return Data
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                // Exception
+                throw new Exception(e.Message);
+            }
+
+        }
+
+        //Method to unpark the car 
         public object CarUnPark(VehicalUnpark details)
         {
             try
@@ -70,6 +97,27 @@ namespace BusinessLayer.Services
                 // Exception
                 throw new Exception(e.Message);
 
+            }
+        }
+
+        // Method to delete Unpark car details
+        public object DeleteUnparkCarDetails(int UnparkVehicalID)
+        {
+            try
+            {
+                var data = parkingLotRL.DeleteUnparkCarDetails(UnparkVehicalID);
+                if(data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
             }
         }
 

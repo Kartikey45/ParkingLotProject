@@ -20,6 +20,35 @@ namespace RepositoryLayer.Services
             dataBase = _dataBase;
         }
 
+        //Method to show all cars parking details
+        public List<ParkingLotDetails> GetAllParkingCarsDetails()
+        {
+            try
+            {
+                // Return Parking Lot Data
+                return (from parkingDetails in dataBase.ParkingLotDetails
+                        select new ParkingLotDetails
+                        {
+                            ParkingID = parkingDetails.ParkingID,
+                            VehicleOwnerName = parkingDetails.VehicleOwnerName,
+                            VehicleNumber = parkingDetails.VehicleNumber,
+                            VehicalBrand = parkingDetails.VehicalBrand,
+                            VehicalColor = parkingDetails.VehicalColor,
+                            DriverName = parkingDetails.DriverName,
+                            ParkingSlot = parkingDetails.ParkingSlot,
+                            ParkingUserCategory = parkingDetails.ParkingUserCategory,
+                            Status = parkingDetails.Status,
+                            ParkingDate = parkingDetails.ParkingDate,
+                        }).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        
+
         //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {
@@ -188,6 +217,31 @@ namespace RepositoryLayer.Services
             }
         }
 
+        // Method to delete Unpark car details
+        public object DeleteUnparkCarDetails(int UnparkVehicalID)
+        {
+            try
+            {
+                var details = dataBase.VehicleUnpark.FirstOrDefault(x => x.VehicleUnParkID == UnparkVehicalID);
+
+                if (details != null)
+                {
+                    dataBase.VehicleUnpark.Remove(details);
+
+                    dataBase.SaveChanges();
+                    return "Data deleted Successfully";
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
         //Method to return Parking lot status
         public object ParkingLotStatus()
         {
@@ -212,21 +266,21 @@ namespace RepositoryLayer.Services
             var condition1 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "B" && parkingDetails.Status == "Park").Count();
             var condition2 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "C" && parkingDetails.Status == "Park").Count();
             var condition3 = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.ParkingSlot == "D" && parkingDetails.Status == "Park").Count();
-            if (condition != Limit.ParkingSlotA)
+            if (condition3 != Limit.ParkingSlotA)
             {
-                return parkingSlot = "A";
+                return parkingSlot = "D";
             }
-            else if (condition1 != Limit.ParkingSlotB)
-            {
-                return parkingSlot = "B";
-            }
-            else if (condition2 != Limit.ParkingSlotC)
+            else if (condition2 != Limit.ParkingSlotB)
             {
                 return parkingSlot = "C";
             }
-            else if (condition3 != Limit.ParkingSlotD)
+            else if (condition1 != Limit.ParkingSlotC)
             {
-                return parkingSlot = "D";
+                return parkingSlot = "B";
+            }
+            else if (condition != Limit.ParkingSlotD)
+            {
+                return parkingSlot = "A";
             }
             else
             {
