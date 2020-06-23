@@ -101,11 +101,11 @@ namespace BusinessLayer.Services
         }
 
         // Method to delete Unpark car details
-        public object DeleteUnparkCarDetails(int UnparkVehicalID)
+        public object DeleteUnparkHistory(int UnparkVehicalID)
         {
             try
             {
-                var data = parkingLotRL.DeleteUnparkCarDetails(UnparkVehicalID);
+                var data = parkingLotRL.DeleteUnparkHistory(UnparkVehicalID);
                 if(data == null)
                 {
                     throw new Exception();
@@ -164,6 +164,30 @@ namespace BusinessLayer.Services
             {
                 // Exception
                 throw new Exception(e.Message);
+            }
+        }
+
+        // Get All UnPark Car Details
+        public object GetAllUnParkedCarDetail()
+        {
+            try
+            {
+                var data = parkingLotRL.GetAllUnParkedCarDetail();
+                // Check IF Data Equal To Null 
+                if (data == null)
+                {
+                    // IF Data Null Throw Exception
+                    throw new Exception();
+                }
+                else
+                {
+                    // Return data
+                    return data;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
             }
         }
     }

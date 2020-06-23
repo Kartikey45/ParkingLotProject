@@ -22,12 +22,10 @@ namespace RepositoryLayer.Interface
         // Get All Parking Cars Details
         List<ParkingLotDetails> GetAllParkingCarsDetails();
 
-        /*
-        // Get All UnPark Car Details
-        object GetUnParkCarDetail();
-        */
-
         // Method to delete Unpark car details
-        object DeleteUnparkCarDetails(int UnparkID);
+        object DeleteUnparkHistory(int UnparkID);
+
+        // Get All UnPark Car Details
+        object GetAllUnParkedCarDetail();
     }
 }

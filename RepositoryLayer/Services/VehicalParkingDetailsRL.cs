@@ -218,7 +218,7 @@ namespace RepositoryLayer.Services
         }
 
         // Method to delete Unpark car details
-        public object DeleteUnparkCarDetails(int UnparkVehicalID)
+        public object DeleteUnparkHistory(int UnparkVehicalID)
         {
             try
             {
@@ -258,6 +258,37 @@ namespace RepositoryLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        // Get All UnPark Car Details
+        public object GetAllUnParkedCarDetail()
+        {
+            try
+            {
+                // Return UnPark Car Details
+                return (from parkingDetails in dataBase.ParkingLotDetails
+                        join vehicleUnParkDetails in dataBase.VehicleUnpark on parkingDetails.ParkingID equals vehicleUnParkDetails.ParkingID
+                        select new
+                        {
+                            parkingDetails.ParkingID,
+                            parkingDetails.VehicleOwnerName,
+                            parkingDetails.VehicleNumber,
+                            parkingDetails.VehicalBrand,
+                            parkingDetails.VehicalColor,
+                            parkingDetails.DriverName,
+                            parkingDetails.ParkingSlot,
+                            parkingDetails.ParkingUserCategory,
+                            parkingDetails.ParkingDate,
+                            vehicleUnParkDetails.UnParkDate,
+                            vehicleUnParkDetails.TotalTime,
+                            vehicleUnParkDetails.TotalAmount
+                        }).ToList();
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
 
         //Method to check empty parking slot
         public string checkValidParkingSlot(string parkingSlot)

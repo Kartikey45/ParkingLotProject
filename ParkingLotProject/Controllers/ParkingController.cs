@@ -123,13 +123,13 @@ namespace ParkingLotProject.Controllers
 
         //Method to delete Unpark car details
         [HttpDelete]
-        [Route("Unpark")]
+        [Route("UnparkHistory")]
         [Authorize(Roles = "Owner")]
-        public IActionResult DeleteUnParkedCarDetails(int UnparkCarId)
+        public IActionResult DeleteUnparkHistory(int UnparkCarId)
         {
             try
             {
-                var data = parkingLotBusiness.DeleteUnparkCarDetails(UnparkCarId);
+                var data = parkingLotBusiness.DeleteUnparkHistory(UnparkCarId);
                 bool success = false;
                 string message;
                 if (data == null)
@@ -217,6 +217,38 @@ namespace ParkingLotProject.Controllers
                 bool sucess = false;
                 string message = e.Message;
                 return BadRequest(new { sucess, message });
+            }
+        }
+
+        //Method to get Unparkd cars details
+        [HttpGet]
+        [Route("UnParkDetails")]
+        [Authorize(Roles = "Owner, Police")]
+        public ActionResult GetAllUnParkedCarDetail()
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetAllUnParkedCarDetail();
+                bool success;
+                string message;
+                if (data == null)
+                {
+                    success = false;
+                    message = "Failed to fetch details";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "UnParked cars details fetched successfully";
+                    return Ok(new { success, message, data });
+                }
+            }
+            catch (Exception e)
+            {
+                bool success = false;
+                string message = e.Message;
+                return BadRequest(new { success, message });
             }
         }
     }
