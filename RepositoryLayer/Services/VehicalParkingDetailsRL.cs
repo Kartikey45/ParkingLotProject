@@ -144,6 +144,36 @@ namespace RepositoryLayer.Services
             }
         }
 
+        //Get all car details by color
+        public object GetAllCarDetailsByColor(string VehicalColor)
+        {
+            try
+            {
+                try
+                {
+                    if (dataBase.ParkingLotDetails.Any(x => x.VehicalColor == VehicalColor))
+                    {
+                        var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                    where parkingDetails.VehicalColor == VehicalColor
+                                    select parkingDetails).ToList();
+                        return data;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
         //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {

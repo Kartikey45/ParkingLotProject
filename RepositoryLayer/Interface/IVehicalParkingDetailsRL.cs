@@ -39,5 +39,8 @@ namespace RepositoryLayer.Interface
 
         // Get All Car Details Of Handicap
         object GetAllCarDetailsOfHandicap();
+
+        //Get all car details by color
+        object GetAllCarDetailsByColor(string VehicalColor);
     }
 }

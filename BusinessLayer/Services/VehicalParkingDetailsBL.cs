@@ -274,5 +274,26 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        //Get all car details by color
+        public object GetAllCarDetailsByColor(string VehicalColor)
+        {
+            try
+            {
+                var data = parkingLotRL.GetAllCarDetailsByColor(VehicalColor);
+                if (data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

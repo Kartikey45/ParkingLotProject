@@ -364,5 +364,32 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, message });
             }
         }
+
+        //Method to get all car details  by color
+        [Authorize(Roles = "Owner,Police")]
+        [HttpGet]
+        [Route("SearchByColor")]
+        public ActionResult GetAllCarDetailsByColor(string VehicalColor)
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetAllCarDetailsByColor(VehicalColor);
+                bool success = false;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Details found";
+                    return Ok(new { success, message, data });
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                bool success = false;
+                string message = "Not Found";
+                return BadRequest(new { success, message });
+            }
+        }
     }
 }

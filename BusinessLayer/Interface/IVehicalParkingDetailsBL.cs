@@ -38,5 +38,8 @@ namespace BusinessLayer.Interface
 
         // Get All Car Details Of Handicap
         object GetAllCarDetailsOfHandicap();
+
+        //Get Car all car details by color
+        object GetAllCarDetailsByColor(string VehicalColor);
     }
 }
