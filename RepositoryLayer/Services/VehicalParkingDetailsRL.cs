@@ -117,6 +117,32 @@ namespace RepositoryLayer.Services
             }
         }
 
+        // Get All Car Details Of Handicap
+        public object GetAllCarDetailsOfHandicap()
+        {
+            try
+            {
+                // Quary 
+                if (dataBase.ParkingLotDetails.Any(x => x.ParkingUserCategory == "Handicap"))
+                {
+                    // Quary For Get All  Car Detail 
+                    var VehicleData = (from parkingDetails in dataBase.ParkingLotDetails
+                                       where parkingDetails.ParkingUserCategory == "Handicap"
+                                       select parkingDetails).ToList();
+                    // Return Data
+                    return VehicleData;
+                }
+                else
+                {
+                    // If Data Not Found
+                    throw new Exception();
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
 
         //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)

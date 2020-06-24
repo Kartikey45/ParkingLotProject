@@ -307,8 +307,8 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to get details by vehical brand
-        //[Authorize(Roles = "Owner,Police")]
-        [HttpPost]
+        [Authorize(Roles = "Owner,Police")]
+        [HttpGet]
         [Route("SearchByBrand")]
         public ActionResult GetCarDetailsByVehicleBrand(string brand)
         {
@@ -324,6 +324,38 @@ namespace ParkingLotProject.Controllers
                     return Ok(new { success, message, data });
                 }
                 return Ok();
+            }
+            catch (Exception)
+            {
+                bool success = false;
+                string message = "Not Found";
+                return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to get handicap User car details
+        [Authorize(Roles = "Owner,Police")]
+        [HttpGet]
+        [Route("Handicap")]
+        public ActionResult GetAllCarDetailsOfHandicap()
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetAllCarDetailsOfHandicap();
+                bool success = false;
+                string message;
+                if (data == null)
+                {
+                    success = false;
+                    message = "No Details";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfully Got Details";
+                    return Ok(new { success, message, data });
+                }
             }
             catch (Exception)
             {

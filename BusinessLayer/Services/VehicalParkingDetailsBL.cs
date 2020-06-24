@@ -253,5 +253,26 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        // Get All Car Details Of Handicap
+        public object GetAllCarDetailsOfHandicap()
+        {
+            try
+            {
+                var data = parkingLotRL.GetAllCarDetailsOfHandicap();
+                if (data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

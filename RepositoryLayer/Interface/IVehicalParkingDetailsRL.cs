@@ -36,5 +36,8 @@ namespace RepositoryLayer.Interface
 
         // Get Car Details By Car Brand
         object GetCarDetailsByVehicleBrand(string brand);
+
+        // Get All Car Details Of Handicap
+        object GetAllCarDetailsOfHandicap();
     }
 }
