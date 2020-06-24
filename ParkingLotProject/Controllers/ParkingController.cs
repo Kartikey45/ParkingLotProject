@@ -24,7 +24,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to get all car parking details
         [HttpGet]
-        [Authorize(Roles = "Owner, Police")]
+        [Authorize(Roles = "Owner, Police, Security")]
         public ActionResult GetAllParkingCarsDetails()
         {
             try
@@ -90,7 +90,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to Delete parking details
         [HttpDelete]
-        [Route("Park")]
+        [Route("LotDetails")]
         [Authorize(Roles = "Owner")]
         public ActionResult DeleteCarParkingDetails(int ParkingID)
         {
@@ -222,8 +222,8 @@ namespace ParkingLotProject.Controllers
 
         //Method to get Unparkd cars details
         [HttpGet]
-        [Route("UnParkDetails")]
-        [Authorize(Roles = "Owner, Police")]
+        [Route("UnParks")]
+        [Authorize(Roles = "Owner, Police, Security")]
         public ActionResult GetAllUnParkedCarDetail()
         {
             try
@@ -248,6 +248,33 @@ namespace ParkingLotProject.Controllers
             {
                 bool success = false;
                 string message = e.Message;
+                return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to get details by vehical number
+        [Authorize(Roles = "Owner,Police")]
+        [HttpGet]
+        [Route("SearchByVehicalNumber")]
+        public ActionResult GetCarDetailsByVehicleNumber(string vehicleNumber)
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetCarDetailsByVehicleNumber(vehicleNumber);
+                bool success = false;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Details found ";
+                    return Ok(new { success, message, data });
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                bool success = false;
+                string message = "Failed";
                 return BadRequest(new { success, message });
             }
         }

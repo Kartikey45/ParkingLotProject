@@ -16,7 +16,8 @@ namespace CommonLayer.ParkingModel
         [Required(ErrorMessage = "Wrong Field Name Please Write Vehicle_Owner_Name")]
         public string VehicleOwnerName { get; set; }
 
-        [RegularExpression(@"^(([A-Za-z]){2}(|-)(?:[0-9]){1,2}(|-)(?:[A-Za-z]){2}(|-)([0-9]){1,4})|(([A-Za-z]){2,3}(|-)([0-9]){1,4})$", ErrorMessage = "Please Enter In This Way MH-12-AA-1235 ")]
+        //[RegularExpression(@"^(([A-Za-z]){2}(|-)(?:[0-9]){1,2}(|-)(?:[A-Za-z]){2}(|-)([0-9]){1,4})|(([A-Za-z]){2,3}(|-)([0-9]){1,4})$", ErrorMessage = "Please Enter In This Way MH-12-AA-1235 ")]
+        [RegularExpression(@"^[a-z||A-Z]{2}[ ]{1}[0-9]{2}[ ]{1}[a-z||A-Z]{1,2}[ ]{1}[0-9]{4}$", ErrorMessage = "Invalid Vehical Number , Please Enter In This Way    MH 12 AA 1235 ")]
         [Required(ErrorMessage = "Wrong Field Name Please Write Vehicles_Number")]
         public string VehicleNumber { get; set; }
 

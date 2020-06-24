@@ -27,5 +27,8 @@ namespace RepositoryLayer.Interface
 
         // Get All UnPark Car Details
         object GetAllUnParkedCarDetail();
+
+        // Get Car Details By Car Number
+        object GetCarDetailsByVehicleNumber(string VehicleNumber);
     }
 }

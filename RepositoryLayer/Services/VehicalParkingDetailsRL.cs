@@ -47,7 +47,28 @@ namespace RepositoryLayer.Services
             }
         }
 
-        
+        // Get Car Details By Car Number
+        public object GetCarDetailsByVehicleNumber(string VehicleNumber)
+        {
+            try
+            {
+                if (dataBase.ParkingLotDetails.Any(x => x.VehicleNumber == VehicleNumber))
+                {
+                    var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                where parkingDetails.VehicleNumber == VehicleNumber
+                                select parkingDetails).ToList();
+                    return data;
+                }
+                else
+                {
+                    throw new Exception();
+                }  
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
 
         //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)

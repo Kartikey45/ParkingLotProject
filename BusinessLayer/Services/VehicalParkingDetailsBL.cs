@@ -190,5 +190,26 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        // Get Car Details By Car Number
+        public object GetCarDetailsByVehicleNumber(string VehicleNumber)
+        {
+            try
+            {
+                var data = parkingLotRL.GetCarDetailsByVehicleNumber(VehicleNumber);
+                if(data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }
