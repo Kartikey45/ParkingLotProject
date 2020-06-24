@@ -154,7 +154,6 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-
                 var data = _BusinessLayer.UpdateUserRecord(UserId, details);
 
                 if (!data.Equals(null))
@@ -180,6 +179,40 @@ namespace ParkingLotProject.Controllers
                 var success = false;
                 var Message = "Failed to update data";
                 return BadRequest(new { success, error = exception.Message, Message });
+            }
+        }
+
+        //Method to get all user details
+        [Authorize(Roles = "Owner")]
+        [HttpGet]
+        public IActionResult GetAllUserDetails()
+        {
+            try
+            {
+                var data = _BusinessLayer.GetAllUserDetails();
+                if (!data.Equals(null))
+                {
+                    var success = true;
+                    var Message = "Successfull";
+                    return Ok(new
+                    {
+                        success,
+                        Message,
+                        data
+                    });
+                }
+                else
+                {
+                    var success = false;
+                    var Message = "Failed";
+                    return this.Ok(new { success, Message });
+                }
+            }
+            catch(Exception e)
+            {
+                var success = false;
+                var Message = "Failed";
+                return BadRequest(new { success, error = e.Message, Message });
             }
         }
 

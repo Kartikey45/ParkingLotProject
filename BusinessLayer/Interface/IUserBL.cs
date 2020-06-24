@@ -19,5 +19,8 @@ namespace BusinessLayer.Interface
 
         //Method to update User record by Id
         Object UpdateUserRecord(int UserId, UserDetails details);
+
+        //Method to View All the records
+        List<UserDetails> GetAllUserDetails();
     }
 }

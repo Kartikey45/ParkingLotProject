@@ -106,5 +106,26 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        //Method to View All the records
+        public List<UserDetails> GetAllUserDetails()
+        {
+            try
+            {
+                var data = parkingLot.GetAllUserDetails();
+                if(data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

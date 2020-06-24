@@ -180,5 +180,20 @@ namespace RepositoryLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        //Method to View All the records
+        public List<UserDetails> GetAllUserDetails()
+        {
+            try
+            {
+                var data = (from userDetails in dbContext.UserDetails
+                            select userDetails).ToList();
+                return data;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
