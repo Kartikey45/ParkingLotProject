@@ -211,6 +211,16 @@ namespace ParkingLotXUnitTestCases
         }
 
         [Fact]
+        public void GetAllUserDetailsReturnsOkResult()
+        {
+            //Act
+            var okResult = userController.GetAllUserDetails();
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
         public void GetAllParkingDetails_ReturnsOkResult()
         {
             //Act
@@ -247,6 +257,96 @@ namespace ParkingLotXUnitTestCases
             var badRequest = parkingController.DeleteUnparkHistoryByID(125);
 
             // Assert
+            Assert.IsType<BadRequestObjectResult>(badRequest);
+        }
+
+        [Fact]
+        public void GetCarDetailsByVehicleNumber_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetCarDetailsByVehicleNumber("MP 36 MB 2589");
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetCarDetailsByVehicleNumber_ReturnsBadRequest()
+        {
+            //Act
+            var badresult = parkingController.GetCarDetailsByVehicleNumber("");
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(badresult);
+        }
+
+        [Fact]
+        public void GetCarDetailsByParkingSlot_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetCarDetailsByParkingSlot("D");
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetCarDetailsByParkingSlot_ReturnsBadResult()
+        {
+            //Act
+            var badResult = parkingController.GetCarDetailsByParkingSlot("");
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(badResult);
+        }
+
+        [Fact]
+        public void GetCarDetailsByVehicleBrand_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetCarDetailsByVehicleBrand("Audi");
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetCarDetailsByVehicleBrand_ReturnsBadRequest()
+        {
+            //Act
+            var badRequest = parkingController.GetCarDetailsByVehicleBrand("");
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(badRequest);
+        }
+
+        [Fact]
+        public void GetAllCarDetailsOfHandicap_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetAllCarDetailsOfHandicap();
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetAllCarDetailsByColor_ReturnsOkResult()
+        {
+            //Act
+            var okResult = parkingController.GetAllCarDetailsByColor("Blue");
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
+        }
+
+        [Fact]
+        public void GetAllCarDetailsByColor_ReturnsBadRequest()
+        {
+            //Act
+            var badRequest = parkingController.GetAllCarDetailsByColor("");
+
+            //Assert
             Assert.IsType<BadRequestObjectResult>(badRequest);
         }
     }
