@@ -30,5 +30,11 @@ namespace RepositoryLayer.Interface
 
         // Get Car Details By Car Number
         object GetCarDetailsByVehicleNumber(string VehicleNumber);
+
+        // Get Car Details By Parking Slot
+        object GetCarDetailsByParkingSlot(string Slot);
+
+        // Get Car Details By Car Brand
+        object GetCarDetailsByVehicleBrand(string brand);
     }
 }

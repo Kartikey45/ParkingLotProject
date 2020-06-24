@@ -274,7 +274,61 @@ namespace ParkingLotProject.Controllers
             catch (Exception)
             {
                 bool success = false;
-                string message = "Failed";
+                string message = "Not Found";
+                return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to get details by parking slot
+        [Authorize(Roles = "Owner,Police")]
+        [HttpGet]
+        [Route("SearchBySlot")]
+        public ActionResult GetCarDetailsByParkingSlot(string Slot)
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetCarDetailsByParkingSlot(Slot);
+                bool success = false;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Details found ";
+                    return Ok(new { success, message, data });
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                bool success = false;
+                string message = "Not Found";
+                return BadRequest(new { success, message });
+            }
+        }
+
+        //Method to get details by vehical brand
+        //[Authorize(Roles = "Owner,Police")]
+        [HttpPost]
+        [Route("SearchByBrand")]
+        public ActionResult GetCarDetailsByVehicleBrand(string brand)
+        {
+            try
+            {
+                var data = parkingLotBusiness.GetCarDetailsByVehicleBrand(brand);
+                bool success = false;
+                string message;
+                if (data != null)
+                {
+                    success = true;
+                    message = "Details found";
+                    return Ok(new { success, message, data });
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                bool success = false;
+                string message = "Not Found";
                 return BadRequest(new { success, message });
             }
         }

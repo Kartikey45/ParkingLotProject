@@ -1,5 +1,6 @@
 ﻿using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RepositoryLayer.DBContext;
 using RepositoryLayer.Interface;
 using System;
@@ -69,6 +70,53 @@ namespace RepositoryLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        // Get Car Details By Parking Slot
+        public object GetCarDetailsByParkingSlot(string Slot)
+        {
+            try
+            {
+                if(dataBase.ParkingLotDetails.Any(x => x.ParkingSlot == Slot))
+                {
+                    var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                where parkingDetails.ParkingSlot == Slot
+                                select parkingDetails).ToList();
+                    return data;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        // Get Car Details By Car Brand
+        public object GetCarDetailsByVehicleBrand(string brand)
+        {
+            try
+            {
+                if (dataBase.ParkingLotDetails.Any(x => x.VehicalBrand == brand))
+                {
+                    var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                where parkingDetails.VehicalBrand == brand
+                                select parkingDetails).ToList();
+                    return data;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
 
         //Method to Add parking details
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)

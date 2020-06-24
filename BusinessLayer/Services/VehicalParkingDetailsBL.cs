@@ -211,5 +211,47 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+        // Get Car Details By Parking Slot
+        public object GetCarDetailsByParkingSlot(string Slot)
+        {
+            try
+            {
+                var data = parkingLotRL.GetCarDetailsByParkingSlot(Slot);
+                if(data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        // Get Car Details By Car Brand
+        public object GetCarDetailsByVehicleBrand(string brand)
+        {
+            try
+            {
+                var data = parkingLotRL.GetCarDetailsByVehicleBrand(brand);
+                if (data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }
