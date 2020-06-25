@@ -90,7 +90,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to Delete parking details
         [HttpDelete]
-        [Route("LotDetails")]
+        [Route("Record")]
         [Authorize(Roles = "Owner")]
         public ActionResult DeleteCarParkingDetails(int ParkingID)
         {
@@ -253,9 +253,9 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to get details by vehical number
-        [Authorize(Roles = "Owner,Police")]
+        [Authorize(Roles = "Owner,Police,Driver")]
         [HttpGet]
-        [Route("SearchByVehicalNumber")]
+        [Route("ByVehicalNumber")]
         public ActionResult GetCarDetailsByVehicleNumber(string vehicleNumber)
         {
             try
@@ -282,7 +282,7 @@ namespace ParkingLotProject.Controllers
         //Method to get details by parking slot
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("SearchBySlot")]
+        [Route("BySlot")]
         public ActionResult GetCarDetailsByParkingSlot(string Slot)
         {
             try
@@ -309,7 +309,7 @@ namespace ParkingLotProject.Controllers
         //Method to get details by vehical brand
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("SearchByBrand")]
+        [Route("ByBrand")]
         public ActionResult GetCarDetailsByVehicleBrand(string brand)
         {
             try
@@ -368,7 +368,7 @@ namespace ParkingLotProject.Controllers
         //Method to get all car details  by color
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("SearchByColor")]
+        [Route("ByColor")]
         public ActionResult GetAllCarDetailsByColor(string VehicalColor)
         {
             try
