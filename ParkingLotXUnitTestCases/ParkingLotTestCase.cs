@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Xunit.Sdk;
 using CommonLayer;
 using System.ComponentModel;
+using CommonLayer.Response;
 
 namespace ParkingLotXUnitTestCases
 {
@@ -69,14 +70,14 @@ namespace ParkingLotXUnitTestCases
         public void ParkingCarInLot_ReturnsOkResult()
         {
 
-            ParkingLotDetails details = new ParkingLotDetails()
+            ParkingInformation details = new ParkingInformation()
             {
                 VehicleOwnerName = "Abhijit",
                 VehicleNumber = "MP 67 MB 2817",
                 VehicalBrand = "Honda",
                 VehicalColor = "Black",
                 DriverName = "Harshit",
-                //ParkingUserCategory = "Handicap"
+                ParkingUserCategory = "Handicap"
 
             };
 
@@ -93,7 +94,7 @@ namespace ParkingLotXUnitTestCases
         {
 
 
-            ParkingLotDetails details = new ParkingLotDetails()
+            ParkingInformation details = new ParkingInformation()
             {
                 VehicleOwnerName = "Sahil",
                 VehicalBrand = "Toyota",
