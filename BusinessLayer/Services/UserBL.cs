@@ -62,27 +62,6 @@ namespace BusinessLayer.Services
             }
         }
 
-        //Method for  Authantication
-        public UserAuthantication AuthenticateUserRole(UserAuthantication user)
-        {
-            try
-            {
-                var result = parkingLot.AuthenticateUserRole(user);
-                if (result != null)
-                {
-                    return user;
-                }
-                else
-                {
-                    throw new Exception("Authorization Failed");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         //method to register new user
         public UserDetails register(UserDetails user)
         {

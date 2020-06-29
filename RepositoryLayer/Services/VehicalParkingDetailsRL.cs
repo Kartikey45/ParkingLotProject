@@ -1,11 +1,13 @@
 ﻿using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
+using CommonLayer.Response;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RepositoryLayer.DBContext;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace RepositoryLayer.Services
@@ -175,7 +177,7 @@ namespace RepositoryLayer.Services
         }
 
         //Method to Add parking details
-        public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
+        public ParkingLotDetails ParkingCarInLot(ParkingInformation Details)
         {
             var condition = dataBase.ParkingLotDetails.Where(parkingDetails => parkingDetails.Status == "Park").Count();
 
@@ -184,6 +186,14 @@ namespace RepositoryLayer.Services
             {
                 try
                 {
+                    ParkingLotDetails details = new ParkingLotDetails();
+                    details.VehicleOwnerName = Details.VehicleOwnerName;
+                    details.VehicleNumber = Details.VehicleNumber;
+                    details.VehicalBrand = Details.VehicalBrand;
+                    details.VehicalColor = Details.VehicalColor;
+                    details.DriverName = Details.DriverName;
+                    details.ParkingUserCategory = Details.ParkingUserCategory;
+
                     // Conditions 
                     bool condition1 = dataBase.ParkingLotDetails.Any(parkingDetails => parkingDetails.VehicleNumber == details.VehicleNumber);
                     //bool condition2 = dataBase.ParkingLotDetails.Any (parkingDetails => parkingDetails.VehicleNumber == details.VehicleNumber && parkingDetails.Status == "UnPark");
@@ -191,7 +201,6 @@ namespace RepositoryLayer.Services
                     // Check Same Data Available Or Not By Vehicale Number
                     if (!condition1)
                     {
-
                         details.ParkingDate = DateTime.Now;
                         details.Status = "Park";
                         details.ParkingSlot = checkValidParkingSlot(details.ParkingSlot);
@@ -234,14 +243,20 @@ namespace RepositoryLayer.Services
         }
 
         //Method to Unpark the car
-        public object CarUnPark(VehicalUnpark details)
+        public object CarUnPark(int ID)
         {
             try
             {
+               
 
-                bool condition1 = dataBase.VehicleUnpark.Any(parkingDetails => parkingDetails.ParkingID == details.ParkingID);
+                bool condition1 = dataBase.VehicleUnpark.Any(parkingDetails => parkingDetails.ParkingID == ID);
                 if (!condition1)
                 {
+
+                    VehicalUnpark details = new VehicalUnpark();
+
+                    details.ParkingID = ID;
+
                     // Quary For Calculating Total Time
                     double total = dataBase.ParkingLotDetails
                         .Where(p => p.ParkingID == details.ParkingID)
@@ -299,7 +314,7 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    return (details.ParkingID + "  Parking Id Already UnParked");
+                    return (ID + "  Parking Id Already UnParked");
                 }
 
             }
@@ -309,22 +324,27 @@ namespace RepositoryLayer.Services
             }
         }
 
-
         //Method to delete parking details
         public object DeleteCarParkingDetails(int ParkingID)
         {
             try
             {
                 //Find the Car Parking  For Specific Receipt Number
-                var details = dataBase.ParkingLotDetails.FirstOrDefault(x => x.ParkingID == ParkingID);
+                var details1 = dataBase.ParkingLotDetails.FirstOrDefault(x => x.ParkingID == ParkingID);
+                               
+                var details2 = dataBase.VehicleUnpark.FirstOrDefault(x => x.ParkingID == ParkingID);
 
-                if (details != null)
+
+                if (details1 != null && details2 !=  null)
                 {
                     //Delete
-                    dataBase.ParkingLotDetails.Remove(details);
+                    dataBase.ParkingLotDetails.Remove(details1);
+
+                    dataBase.VehicleUnpark.Remove(details2);
 
                     //Commit the transaction
                     dataBase.SaveChanges();
+
                     return "Data Deleted Successfully";
                 }
                 else
@@ -333,37 +353,11 @@ namespace RepositoryLayer.Services
                     //   return ReceiptNumber + " This Receipt Number Not Found";
                     throw new Exception();
                 }
-
             }
             catch (Exception e)
             {
                 // Exception
                 throw new Exception(e.Message);
-            }
-        }
-
-        // Method to delete Unpark car details
-        public object DeleteUnparkHistory(int UnparkVehicalID)
-        {
-            try
-            {
-                var details = dataBase.VehicleUnpark.FirstOrDefault(x => x.VehicleUnParkID == UnparkVehicalID);
-
-                if (details != null)
-                {
-                    dataBase.VehicleUnpark.Remove(details);
-
-                    dataBase.SaveChanges();
-                    return "Data deleted Successfully";
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch(Exception exception)
-            {
-                throw new Exception(exception.Message);
             }
         }
 

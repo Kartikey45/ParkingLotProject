@@ -120,7 +120,7 @@ namespace ParkingLotXUnitTestCases
             };
 
             // Act
-            var okResult = parkingController.CarUnPark(details);
+            var okResult = parkingController.CarUnPark(47);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);
@@ -138,7 +138,7 @@ namespace ParkingLotXUnitTestCases
             };
 
             // Act
-            var badRequest = parkingController.CarUnPark(details);
+            var badRequest = parkingController.CarUnPark(258);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(badRequest);
@@ -282,28 +282,6 @@ namespace ParkingLotXUnitTestCases
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);
-        }
-
-        //delete unparked history returns ok result
-        [Fact]
-        public void DeleteUnparkHistoryByID_ReturnsOKResult()
-        {
-            // Act
-            var okResult = parkingController.DeleteUnparkHistoryByID(7);
-
-            // Assert
-            Assert.IsType<OkObjectResult>(okResult);
-        }
-
-        //delete unparked history returns bad request
-        [Fact]
-        public void DeleteUnparkHistoryByID_ReturnsBadRequest()
-        {
-            // Act
-            var badRequest = parkingController.DeleteUnparkHistoryByID(125);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(badRequest);
         }
 
         //get details by vehical number returns ok result

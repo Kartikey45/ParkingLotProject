@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
+using CommonLayer.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,13 +56,13 @@ namespace ParkingLotProject.Controllers
 
         //Method to park the car in parking lot
         [HttpPost]
-        [Route("Park")]
-        public IActionResult ParkingCarInLot(ParkingLotDetails details)
+        [Route("")]
+        public IActionResult ParkingCarInLot(ParkingInformation Details)
         {
             try
             {
 
-                var data = parkingLotBusiness.ParkingCarInLot(details);
+                var data = parkingLotBusiness.ParkingCarInLot(Details);
                 var count = parkingLotBusiness.ParkingLotStatus();
                 bool success = false;
                 string message;
@@ -85,18 +86,17 @@ namespace ParkingLotProject.Controllers
                 string message = e.Message;
                 return BadRequest(new { success, message });
             }
-
         }
 
         //Method to Delete parking details
         [HttpDelete]
-        [Route("Record")]
+        [Route("{ID}")]
         [Authorize(Roles = "Owner")]
-        public ActionResult DeleteCarParkingDetails(int ParkingID)
+        public ActionResult DeleteCarParkingDetails(int ID)
         {
             try
             {
-                var data = parkingLotBusiness.DeleteCarParkingDetails(ParkingID);
+                var data = parkingLotBusiness.DeleteCarParkingDetails(ID);
                 bool success = false;
                 string message;
                 if (data == null)
@@ -119,40 +119,6 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, message });
             }
         }
-
-
-        //Method to delete Unpark car details
-        [HttpDelete]
-        [Route("UnparkHistory")]
-        [Authorize(Roles = "Owner")]
-        public IActionResult DeleteUnparkHistoryByID(int UnparkCarId)
-        {
-            try
-            {
-                var data = parkingLotBusiness.DeleteUnparkHistory(UnparkCarId);
-                bool success = false;
-                string message;
-                if (data == null)
-                {
-                    success = false;
-                    message = "Failed To Delete";
-                    return Ok(new { success, message });
-                }
-                else
-                {
-                    success = true;
-                    message = "Deleted Successfully";
-                    return Ok(new { success, message, data });
-                }
-            }
-            catch (Exception e)
-            {
-                bool success = false;
-                string message = e.Message;
-                return BadRequest(new { success, message });
-            }
-        }
-
 
         //Method to return Parking status
         [HttpGet]
@@ -190,13 +156,13 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to unpark the car
-        [HttpPost]
-        [Route("UnPark")]
-        public ActionResult CarUnPark(VehicalUnpark details)
+        [HttpPut]
+        [Route("Unpark/{ID}")]
+        public ActionResult CarUnPark(int ID)
         {
             try
             {
-                var data = parkingLotBusiness.CarUnPark(details);
+                var data = parkingLotBusiness.CarUnPark(ID);
                 bool success;
                 string message;
                 if (data != null)
@@ -222,7 +188,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to get Unparkd cars details
         [HttpGet]
-        [Route("UnParks")]
+        [Route("Unparked")]
         [Authorize(Roles = "Owner, Police, Security")]
         public ActionResult GetAllUnParkedCarDetail()
         {
@@ -255,12 +221,12 @@ namespace ParkingLotProject.Controllers
         //Method to get details by vehical number
         [Authorize(Roles = "Owner,Police,Driver")]
         [HttpGet]
-        [Route("VehicalNumber")]
-        public ActionResult GetCarDetailsByVehicleNumber(string vehicleNumber)
+        [Route("Number")]
+        public ActionResult GetCarDetailsByVehicleNumber(string Number)
         {
             try
             {
-                var data = parkingLotBusiness.GetCarDetailsByVehicleNumber(vehicleNumber);
+                var data = parkingLotBusiness.GetCarDetailsByVehicleNumber(Number);
                 bool success = false;
                 string message;
                 if (data != null)
@@ -309,7 +275,7 @@ namespace ParkingLotProject.Controllers
         //Method to get details by vehical brand
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("Brand")]
+        [Route("brand")]
         public ActionResult GetCarDetailsByVehicleBrand(string brand)
         {
             try
@@ -369,11 +335,11 @@ namespace ParkingLotProject.Controllers
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
         [Route("Color")]
-        public ActionResult GetAllCarDetailsByColor(string VehicalColor)
+        public ActionResult GetAllCarDetailsByColor(string Color)
         {
             try
             {
-                var data = parkingLotBusiness.GetAllCarDetailsByColor(VehicalColor);
+                var data = parkingLotBusiness.GetAllCarDetailsByColor(Color);
                 bool success = false;
                 string message;
                 if (data != null)

@@ -138,43 +138,6 @@ namespace RepositoryLayer.Services
             }
         }
 
-        //Method for Authenticate
-        public UserAuthantication AuthenticateUserRole(UserAuthantication user)
-        {
-            try
-            {
-                //validating UserRole
-                bool inputUserType = Enum.TryParse<UserTypes.User>(user.UserRole, true, out UserTypes.User type);
-                if (inputUserType != true)
-                {
-                    throw new Exception("Invalid User Role");
-                }
-
-                //variable declared
-                string Email = user.Email;
-                int UserId = user.UserId;
-
-                //User category 
-                string UserRole = user.UserRole;
-
-                //Validating User Authorization details
-                var Result = dbContext.UserDetails.Where(v => v.Email == Email && v.UserType == UserRole && v.ID == UserId).FirstOrDefault();
-                if (Result != null)
-                {
-                    return user;
-                }
-                else
-                {
-                    throw new Exception(" Authentication failed");
-                }
-
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         //Method to update user record by id
         public object UpdateUserRecord(int UserId, UserDetails details)
         {

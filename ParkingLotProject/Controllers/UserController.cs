@@ -90,17 +90,19 @@ namespace ParkingLotProject.Controllers
                 {
                     LoginResponse Data = new LoginResponse
                     {
-                        Email = user.Email,
-                        UserRole = user.UserTypes
+                        UserRole = user.UserTypes,
+                        Email = user.Email
                     };
                     var success = true;
                     var Message = "Login successfull ";
-                    return Ok(new { success, Message, Data });                  
+                    string JsonToken = CreateToken(data, "AuthenticateUserRole");
+                    return Ok(new { success, Message, Data, JsonToken});                  
                 }
                 else
                 {
                     var success = false;
                     var Message = "Login Failed";
+                    
                     return Ok(new { success, Message });                             
                 }
             }
@@ -111,47 +113,11 @@ namespace ParkingLotProject.Controllers
                 return BadRequest(new { success, error = exception.Message, Message });
             }
         }
-
-        //Method for Authentication
-        [Route("Authanticate")]
-        [HttpPost]
-        public IActionResult AuthenticateUserRole(UserAuthantication user)
-        {
-            try
-            {
-                UserAuthantication data = _BusinessLayer.AuthenticateUserRole(user);
-                if (data != null)
-                {
-                    LoginResponse Data = new LoginResponse
-                    {
-                        UserId = user.UserId,
-                        Email = user.Email,
-                        UserRole = user.UserRole
-                    };
-                    var success = true;
-                    var Message = "Authentication successfull ";
-                    string JsonToken = CreateToken(data, "AuthenticateUserRole");
-                    return Ok(new { success, Message, Data, JsonToken });
-                }
-                else
-                {
-                    var success = false;
-                    var Message = "Authantication Failed";
-                    return Ok(new { success, Message });
-                }
-            }
-            catch(Exception ex)
-            {
-                var success = false;
-                var Message = "Login Failed";
-                return BadRequest(new { success, error = ex.Message, Message });
-            }
-        }
-
+        
         //Method to delete user details
         [Authorize(Roles = "Owner")]
         [HttpDelete]
-        [Route("")]
+        [Route("{ID}")]
         public IActionResult DeleteUserRecord(int UserID)
         {
             try
@@ -252,7 +218,7 @@ namespace ParkingLotProject.Controllers
         }
 
         //Method to create JWT token
-        private string CreateToken(UserAuthantication responseData, string type)
+        private string CreateToken(UserLogin responseData, string type)
         {
             try
             {
@@ -260,12 +226,9 @@ namespace ParkingLotProject.Controllers
                 var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
 
                 var claims = new List<Claim>();
-                //claims.Add(new Claim(ClaimTypes.Role, type));
-                claims.Add(new Claim(ClaimTypes.Role, responseData.UserRole));
+                claims.Add(new Claim(ClaimTypes.Role, responseData.UserTypes));
                 claims.Add(new Claim("Email", responseData.Email.ToString()));
-                claims.Add(new Claim("UserId", responseData.UserId.ToString()));
-                //claims.Add(new Claim("Password", responseData.Password.ToString()));
-
+                
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],
                     claims,

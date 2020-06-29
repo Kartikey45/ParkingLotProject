@@ -44,8 +44,6 @@ namespace ParkingLotProject
             services.AddDbContextPool<ParkingLotDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ParkingLotDBConnection")));
 
             //JWT Autentication applied
-            //string securityKey = "123465 this is user";
-            //var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -80,7 +78,7 @@ namespace ParkingLotProject
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-               {
+                {
                    {
                          new OpenApiSecurityScheme
                            {

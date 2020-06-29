@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.ParkingLimitForVehical;
 using CommonLayer.ParkingModel;
+using CommonLayer.Response;
 using RepositoryLayer.DBContext;
 using RepositoryLayer.Interface;
 using System;
@@ -50,11 +51,11 @@ namespace BusinessLayer.Services
         }
 
         //Method to unpark the car 
-        public object CarUnPark(VehicalUnpark details)
+        public object CarUnPark(int ParkingID)
         {
             try
             {
-                var data = parkingLotRL.CarUnPark(details);
+                var data = parkingLotRL.CarUnPark(ParkingID);
 
                 // Check IF Data Equal To Null 
                 if (data == null)
@@ -100,27 +101,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        // Method to delete Unpark car details
-        public object DeleteUnparkHistory(int UnparkVehicalID)
-        {
-            try
-            {
-                var data = parkingLotRL.DeleteUnparkHistory(UnparkVehicalID);
-                if(data == null)
-                {
-                    throw new Exception();
-                }
-                else
-                {
-                    return data;
-                }
-            }
-            catch(Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
+        /*
         //Method to Add car park details 
         public ParkingLotDetails ParkingCarInLot(ParkingLotDetails details)
         {
@@ -137,6 +118,27 @@ namespace BusinessLayer.Services
                 }
             }
             catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+        */
+
+        public ParkingLotDetails ParkingCarInLot(ParkingInformation Details)
+        {
+            try
+            {
+                var data = parkingLotRL.ParkingCarInLot(Details);
+                if (data == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -295,5 +297,7 @@ namespace BusinessLayer.Services
                 throw new Exception(exception.Message);
             }
         }
+
+       
     }
 }

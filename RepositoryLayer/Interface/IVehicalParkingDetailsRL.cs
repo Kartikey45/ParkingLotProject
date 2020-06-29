@@ -1,4 +1,5 @@
 ﻿using CommonLayer.ParkingModel;
+using CommonLayer.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace RepositoryLayer.Interface
     public interface IVehicalParkingDetailsRL
     {
         //Car park
-        ParkingLotDetails ParkingCarInLot(ParkingLotDetails details);
+        ParkingLotDetails ParkingCarInLot(ParkingInformation Details);
 
         // Parking Lot Status 
         object ParkingLotStatus();
@@ -17,13 +18,11 @@ namespace RepositoryLayer.Interface
         object DeleteCarParkingDetails(int ParkingID);
 
         // Car UnPark 
-        object CarUnPark(VehicalUnpark details);
+        object CarUnPark(int ID);
 
         // Get All Parking Cars Details
         List<ParkingLotDetails> GetAllParkingCarsDetails();
 
-        // Method to delete Unpark car details
-        object DeleteUnparkHistory(int UnparkID);
 
         // Get All UnPark Car Details
         object GetAllUnParkedCarDetail();

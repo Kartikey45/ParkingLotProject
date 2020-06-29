@@ -21,8 +21,5 @@ namespace RepositoryLayer.Interface
 
         //Method to View All the records
         List<UserDetails> GetAllUserDetails();
-
-        //Method for Authantication
-        UserAuthantication AuthenticateUserRole(UserAuthantication user);
     }
 }
