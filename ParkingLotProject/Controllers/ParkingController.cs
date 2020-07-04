@@ -157,7 +157,7 @@ namespace ParkingLotProject.Controllers
 
         //Method to unpark the car
         [HttpPut]
-        [Route("Unpark/{ID}")]
+        [Route("{ID}/Unpark")]
         public ActionResult CarUnPark(int ID)
         {
             try
@@ -221,7 +221,7 @@ namespace ParkingLotProject.Controllers
         //Method to get details by vehical number
         [Authorize(Roles = "Owner,Police,Driver")]
         [HttpGet]
-        [Route("Number")]
+        [Route("SearchByVehical/{Number}")]
         public ActionResult GetCarDetailsByVehicleNumber(string Number)
         {
             try
@@ -229,18 +229,23 @@ namespace ParkingLotProject.Controllers
                 var data = parkingLotBusiness.GetCarDetailsByVehicleNumber(Number);
                 bool success = false;
                 string message;
-                if (data != null)
+                if (data == null)
                 {
                     success = true;
-                    message = "Details found ";
+                    message = "Details not found";
+                    return Ok(new { success, message});
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfully found the details";
                     return Ok(new { success, message, data });
                 }
-                return Ok();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 bool success = false;
-                string message = "Not Found";
+                string message = exception.Message;
                 return BadRequest(new { success, message });
             }
         }
@@ -248,7 +253,7 @@ namespace ParkingLotProject.Controllers
         //Method to get details by parking slot
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("Slot")]
+        [Route("SearchByParking/{Slot}")]
         public ActionResult GetCarDetailsByParkingSlot(string Slot)
         {
             try
@@ -256,18 +261,23 @@ namespace ParkingLotProject.Controllers
                 var data = parkingLotBusiness.GetCarDetailsByParkingSlot(Slot);
                 bool success = false;
                 string message;
-                if (data != null)
+                if (data == null)
                 {
                     success = true;
-                    message = "Details found ";
+                    message = "Details not found";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfully found the details";
                     return Ok(new { success, message, data });
                 }
-                return Ok();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 bool success = false;
-                string message = "Not Found";
+                string message = exception.Message;
                 return BadRequest(new { success, message });
             }
         }
@@ -275,26 +285,31 @@ namespace ParkingLotProject.Controllers
         //Method to get details by vehical brand
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("brand")]
-        public ActionResult GetCarDetailsByVehicleBrand(string brand)
+        [Route("SearchBy/{VehicalBrand}")]
+        public ActionResult GetCarDetailsByVehicleBrand(string VehicalBrand)
         {
             try
             {
-                var data = parkingLotBusiness.GetCarDetailsByVehicleBrand(brand);
+                var data = parkingLotBusiness.GetCarDetailsByVehicleBrand(VehicalBrand);
                 bool success = false;
                 string message;
-                if (data != null)
+                if (data == null)
                 {
                     success = true;
-                    message = "Details found";
+                    message = "Details not found";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfully found the details";
                     return Ok(new { success, message, data });
                 }
-                return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 bool success = false;
-                string message = "Not Found";
+                string message = ex.Message;
                 return BadRequest(new { success, message });
             }
         }
@@ -334,7 +349,7 @@ namespace ParkingLotProject.Controllers
         //Method to get all car details  by color
         [Authorize(Roles = "Owner,Police")]
         [HttpGet]
-        [Route("Color")]
+        [Route("SearchByColor/{Color}")]
         public ActionResult GetAllCarDetailsByColor(string Color)
         {
             try
@@ -342,18 +357,23 @@ namespace ParkingLotProject.Controllers
                 var data = parkingLotBusiness.GetAllCarDetailsByColor(Color);
                 bool success = false;
                 string message;
-                if (data != null)
+                if (data == null)
                 {
                     success = true;
-                    message = "Details found";
+                    message = "Details not found";
+                    return Ok(new { success, message });
+                }
+                else
+                {
+                    success = true;
+                    message = "Successfully found the details";
                     return Ok(new { success, message, data });
                 }
-                return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 bool success = false;
-                string message = "Not Found";
+                string message = ex.Message;
                 return BadRequest(new { success, message });
             }
         }

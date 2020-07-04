@@ -64,7 +64,7 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    throw new Exception();
+                    return null;
                 }  
             }
             catch(Exception exception)
@@ -87,7 +87,7 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    throw new Exception();
+                    return null;
                 }
             }
             catch(Exception exception)
@@ -110,7 +110,7 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    throw new Exception();
+                    return null;
                 }
             }
             catch (Exception exception)
@@ -151,23 +151,16 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                try
+                if (dataBase.ParkingLotDetails.Any(x => x.VehicalColor == VehicalColor))
                 {
-                    if (dataBase.ParkingLotDetails.Any(x => x.VehicalColor == VehicalColor))
-                    {
-                        var data = (from parkingDetails in dataBase.ParkingLotDetails
-                                    where parkingDetails.VehicalColor == VehicalColor
-                                    select parkingDetails).ToList();
-                        return data;
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
+                    var data = (from parkingDetails in dataBase.ParkingLotDetails
+                                where parkingDetails.VehicalColor == VehicalColor
+                                select parkingDetails).ToList();
+                    return data;
                 }
-                catch (Exception exception)
+                else
                 {
-                    throw new Exception(exception.Message);
+                    return null;
                 }
             }
             catch (Exception exception)

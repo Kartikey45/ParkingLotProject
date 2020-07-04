@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BusinessLayer.Services
 {
@@ -198,15 +199,14 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var data = parkingLotRL.GetCarDetailsByVehicleNumber(VehicleNumber);
-                if(data == null)
+
+                if(!IsValid(VehicleNumber))
                 {
                     throw new Exception();
                 }
-                else
-                {
-                    return data;
-                }
+
+                var data = parkingLotRL.GetCarDetailsByVehicleNumber(VehicleNumber);
+                return data;
             }
             catch(Exception exception)
             {
@@ -214,20 +214,29 @@ namespace BusinessLayer.Services
             }
         }
 
+        // Validations for Parking Atttributes
+        public bool IsValid(string input)
+        {
+            Regex VehicalNumber = new Regex("^[a-z||A-Z]{2}[ ]{1}[0-9]{2}[ ]{1}[a-z||A-Z]{1,2}[ ]{1}[0-9]{4}$");
+            Regex VehicalBrand = new Regex("^[A-Z][a-z]*$");
+            Regex VehicalColor = new Regex("^[A-Z][a-z]*$");
+            Regex ParkingSlot = new Regex("^([A-Z])$");
+
+            return (VehicalNumber.IsMatch(input) || VehicalBrand.IsMatch(input) || VehicalColor.IsMatch(input) || ParkingSlot.IsMatch(input));
+        }
+
         // Get Car Details By Parking Slot
         public object GetCarDetailsByParkingSlot(string Slot)
         {
             try
             {
-                var data = parkingLotRL.GetCarDetailsByParkingSlot(Slot);
-                if(data == null)
+
+                if (!IsValid(Slot))
                 {
                     throw new Exception();
                 }
-                else
-                {
-                    return data;
-                }
+                var data = parkingLotRL.GetCarDetailsByParkingSlot(Slot);
+                return data;
             }
             catch(Exception exception)
             {
@@ -240,15 +249,12 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var data = parkingLotRL.GetCarDetailsByVehicleBrand(brand);
-                if (data == null)
+                if (!IsValid(brand))
                 {
                     throw new Exception();
                 }
-                else
-                {
-                    return data;
-                }
+                var data = parkingLotRL.GetCarDetailsByVehicleBrand(brand);
+                return data;
             }
             catch (Exception exception)
             {
@@ -282,15 +288,12 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var data = parkingLotRL.GetAllCarDetailsByColor(VehicalColor);
-                if (data == null)
+                if (!IsValid(VehicalColor))
                 {
                     throw new Exception();
                 }
-                else
-                {
-                    return data;
-                }
+                var data = parkingLotRL.GetAllCarDetailsByColor(VehicalColor);
+                return data;
             }
             catch (Exception exception)
             {
