@@ -240,8 +240,6 @@ namespace RepositoryLayer.Services
         {
             try
             {
-               
-
                 bool condition1 = dataBase.VehicleUnpark.Any(parkingDetails => parkingDetails.ParkingID == ID);
                 if (!condition1)
                 {

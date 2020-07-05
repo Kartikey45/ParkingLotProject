@@ -43,6 +43,13 @@ namespace ParkingLotProject
             services.AddScoped<IUserRL, UserRL>();
             services.AddDbContextPool<ParkingLotDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ParkingLotDBConnection")));
 
+            //configuration for the Redis cache implementation
+            services.AddMemoryCache();
+            services.AddStackExchangeRedisCache(options => 
+            {
+                options.Configuration = "localhost:6379";
+            });
+
             //JWT Autentication applied
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>

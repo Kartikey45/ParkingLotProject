@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommonLayer.ParkingLimitForVehical;
@@ -9,6 +10,8 @@ using CommonLayer.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace ParkingLotProject.Controllers
 {
@@ -17,10 +20,12 @@ namespace ParkingLotProject.Controllers
     public class ParkingController : ControllerBase
     {
         public readonly IVehicalParkingDetailsBL parkingLotBusiness;
+        private readonly IDistributedCache distributedCache;
 
-        public ParkingController(IVehicalParkingDetailsBL _parkingLotBusiness)
+        public ParkingController(IVehicalParkingDetailsBL _parkingLotBusiness, IDistributedCache distributedCache)
         {
             parkingLotBusiness = _parkingLotBusiness;
+            this.distributedCache = distributedCache;
         }
 
         //Method to get all car parking details
@@ -30,20 +35,43 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                var data = parkingLotBusiness.GetAllParkingCarsDetails();
+                string Key = "parking";
+                var cacheKey = Key;
+
+                List<ParkingLotDetails> parkingDetails;
+                string serializedParkingDetails;
+
+                var encodedParkingDetails = distributedCache.Get(cacheKey);
+
+                if (encodedParkingDetails != null)
+                {
+                    serializedParkingDetails = Encoding.UTF8.GetString(encodedParkingDetails);
+                    parkingDetails = JsonConvert.DeserializeObject<List<ParkingLotDetails>>(serializedParkingDetails);
+                }
+                else
+                {
+                    parkingDetails = parkingLotBusiness.GetAllParkingCarsDetails();
+                    serializedParkingDetails = JsonConvert.SerializeObject(parkingDetails);
+                    encodedParkingDetails = Encoding.UTF8.GetBytes(serializedParkingDetails);
+                    var options = new DistributedCacheEntryOptions()
+                                    .SetSlidingExpiration(TimeSpan.FromMinutes(10))
+                                    .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
+                    distributedCache.Set(cacheKey, encodedParkingDetails, options);
+                }
+
                 bool success;
                 string message;
-                if (data == null)
+                if (parkingDetails == null)
                 {
                     success = false;
-                    message = "Failed to Get All Car Parking Details";
+                    message = "Parking Lot is Empty";
                     return Ok(new { success, message });
                 }
                 else
                 {
                     success = true;
                     message = "Successfull to Get All Car Parking Details";
-                    return Ok(new { success, message, data });
+                    return Ok(new { success, message, parkingDetails });
                 }
             }
             catch (Exception e)
