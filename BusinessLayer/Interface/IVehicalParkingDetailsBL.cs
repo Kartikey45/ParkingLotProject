@@ -27,18 +27,18 @@ namespace BusinessLayer.Interface
         object GetAllUnParkedCarDetail();
 
         // Get Car Details By Car Number
-        object GetCarDetailsByVehicleNumber(string VehicleNumber);
+        List<ParkingLotDetails> GetCarDetailsByVehicleNumber(string VehicleNumber);
 
         // Get Car Details By Parking Slot
-        object GetCarDetailsByParkingSlot(string Slot);
+        List<ParkingLotDetails> GetCarDetailsByParkingSlot(string Slot);
 
         // Get Car Details By Car Brand
-        object GetCarDetailsByVehicleBrand(string brand);
+        List<ParkingLotDetails> GetCarDetailsByVehicleBrand(string brand);
 
         // Get All Car Details Of Handicap
-        object GetAllCarDetailsOfHandicap();
+        List<ParkingLotDetails> GetAllCarDetailsOfHandicap();
 
         //Get Car all car details by color
-        object GetAllCarDetailsByColor(string VehicalColor);
+        List<ParkingLotDetails> GetAllCarDetailsByColor(string VehicalColor);
     }
 }

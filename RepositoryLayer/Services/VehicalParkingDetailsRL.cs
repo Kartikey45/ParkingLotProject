@@ -51,7 +51,7 @@ namespace RepositoryLayer.Services
         }
 
         // Get Car Details By Car Number
-        public object GetCarDetailsByVehicleNumber(string VehicleNumber)
+        public List<ParkingLotDetails>  GetCarDetailsByVehicleNumber(string VehicleNumber)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace RepositoryLayer.Services
         }
 
         // Get Car Details By Parking Slot
-        public object GetCarDetailsByParkingSlot(string Slot)
+        public List<ParkingLotDetails> GetCarDetailsByParkingSlot(string Slot)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace RepositoryLayer.Services
         }
 
         // Get Car Details By Car Brand
-        public object GetCarDetailsByVehicleBrand(string brand)
+        public List<ParkingLotDetails> GetCarDetailsByVehicleBrand(string brand)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace RepositoryLayer.Services
         }
 
         // Get All Car Details Of Handicap
-        public object GetAllCarDetailsOfHandicap()
+        public List<ParkingLotDetails> GetAllCarDetailsOfHandicap()
         {
             try
             {
@@ -147,7 +147,7 @@ namespace RepositoryLayer.Services
         }
 
         //Get all car details by color
-        public object GetAllCarDetailsByColor(string VehicalColor)
+        public List<ParkingLotDetails> GetAllCarDetailsByColor(string VehicalColor)
         {
             try
             {

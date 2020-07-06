@@ -23,14 +23,12 @@ namespace ParkingLotProject.Controllers
         //references of layers
         readonly IUserBL _BusinessLayer;
         private readonly IConfiguration _configuration;
-        //private ParkingLotDbContext dBContext;
 
         //constructor
         public UserController(IUserBL _BusinessDependencyInjection, IConfiguration _configuration)
         {
             _BusinessLayer = _BusinessDependencyInjection;
             this._configuration = _configuration;
-            //this.dBContext = dBContext;
         }
 
         //method to register new user
@@ -44,8 +42,6 @@ namespace ParkingLotProject.Controllers
                 UserDetails data = _BusinessLayer.register(user);                    
                 if (!data.Equals(null))
                 {
-                    var success = true;
-                    var Message = "Registration Successfull";
                     RegistrationResponse Data = new RegistrationResponse
                     {
                         FirstName = user.FirstName,
@@ -53,27 +49,16 @@ namespace ParkingLotProject.Controllers
                         Email = user.Email,
                         UserType = user.UserType
                     };
-                   
-                    return Ok(new
-                    {
-                        success,
-                        Message,
-                        Data
-                    });                                                           
-
+                    return Ok(new { success = true, Message = "Registration Successfull", Data = data });                                                           
                 }
                 else
                 {
-                    var success = false;
-                    var Message = "Registration Failed";
-                    return this.Ok(new { success, Message });
+                    return this.Ok(new { success = false, Message = "Registration Failed" });
                 }
             }
             catch (Exception e)
             {
-                var success = false;
-                var Message = "Registration Failed";
-                return BadRequest(new { success, error = e.Message, Message });
+                return BadRequest(new { success = false , Message = e.Message });
             }
         }
 
@@ -93,57 +78,41 @@ namespace ParkingLotProject.Controllers
                         UserRole = user.UserTypes,
                         Email = user.Email
                     };
-                    var success = true;
-                    var Message = "Login successfull ";
                     string JsonToken = CreateToken(data, "AuthenticateUserRole");
-                    return Ok(new { success, Message, Data, JsonToken});                  
+                    return Ok(new { success = true, Message = "Login successfull", Data = Data, JsonToken});                  
                 }
                 else
                 {
-                    var success = false;
-                    var Message = "Login Failed";
-                    
-                    return Ok(new { success, Message });                             
+                    return Ok(new { success =false, Message = "Login Failed" });                             
                 }
             }
             catch(Exception exception)
             {
-                var success = false;
-                var Message = "Login Failed";
-                return BadRequest(new { success, error = exception.Message, Message });
+                return BadRequest(new { success = false, Message = exception.Message });
             }
         }
         
         //Method to delete user details
         [Authorize(Roles = "Owner")]
         [HttpDelete]
-        [Route("{ID}")]
+        [Route("{UserID}")]
         public IActionResult DeleteUserRecord(int UserID)
         {
             try
             {
                 var data = _BusinessLayer.DeleteUserRecord(UserID);
-                bool success = false;
-                string message;
                 if (data != null)
                 {
-                    success = true;
-                    message = "Deleted successfullly";
-                    return Ok(new { success, message, data });
-
+                    return Ok(new { success = true, message = "Deleted succcessfully", data = data });
                 }
                 else
                 {
-                    success = false;
-                    message = "Failed To Delete";
-                    return Ok(new { success, message });
+                    return Ok(new { success = false, message = "Failed to delete" });
                 }
             }
             catch(Exception exception)
             {
-                var success = false;
-                var Message = "Failed to delete";
-                return BadRequest(new { success, error = exception.Message, Message });
+                return BadRequest(new { success = false, Message = exception.Message });
             }
         }
 
@@ -159,27 +128,16 @@ namespace ParkingLotProject.Controllers
 
                 if (!data.Equals(null))
                 {
-                    var success = true;
-                    var Message = "Updated Successfull";
-                    return Ok(new
-                    {
-                        success,
-                        Message,
-                        data
-                    });
+                    return Ok(new { success = true, message = "updated successfully", data = data });
                 }
                 else
                 {
-                    var success = false;
-                    var Message = "Failed to update data";
-                    return this.Ok(new { success, Message });
+                    return Ok(new { success = false, message = "Failed to update data" });
                 }
             }
             catch(Exception exception)
             {
-                var success = false;
-                var Message = "Failed to update data";
-                return BadRequest(new { success, error = exception.Message, Message });
+                return BadRequest(new { success = false, Message = exception.Message });
             }
         }
 
@@ -193,27 +151,16 @@ namespace ParkingLotProject.Controllers
                 var data = _BusinessLayer.GetAllUserDetails();
                 if (!data.Equals(null))
                 {
-                    var success = true;
-                    var Message = "Successfull";
-                    return Ok(new
-                    {
-                        success,
-                        Message,
-                        data
-                    });
+                    return Ok(new { success = true, message = "Successfull", data = data });
                 }
                 else
                 {
-                    var success = false;
-                    var Message = "Failed";
-                    return this.Ok(new { success, Message });
+                    return Ok(new { success = false, message = "Failed" });
                 }
             }
             catch(Exception e)
             {
-                var success = false;
-                var Message = "Failed";
-                return BadRequest(new { success, error = e.Message, Message });
+                return BadRequest(new { success = false, Message = e.Message });
             }
         }
 
