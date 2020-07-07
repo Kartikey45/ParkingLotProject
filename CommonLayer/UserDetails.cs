@@ -37,8 +37,8 @@ namespace CommonLayer
 
         //Password
         [Required(ErrorMessage = "Password Is Required")]
-        [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 6)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         //create date and time

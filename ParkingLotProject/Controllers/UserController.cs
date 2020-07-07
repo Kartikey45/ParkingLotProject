@@ -24,6 +24,9 @@ namespace ParkingLotProject.Controllers
         readonly IUserBL _BusinessLayer;
         private readonly IConfiguration _configuration;
 
+        //Instance of Sender class
+        Sender sender = new Sender();
+
         //constructor
         public UserController(IUserBL _BusinessDependencyInjection, IConfiguration _configuration)
         {
@@ -49,6 +52,11 @@ namespace ParkingLotProject.Controllers
                         Email = user.Email,
                         UserType = user.UserType
                     };
+                    
+                    string MSMQ = "\n First Name : " + Convert.ToString(user.FirstName) + "\n Last Name : " + Convert.ToString(user.LastName) +
+                                    "\n User Role : " + Convert.ToString(user.UserType) + 
+                                    "\n Email : " + Convert.ToString(user.Email) + "\n Password : " + Convert.ToString(user.Password);
+                    sender.Message(MSMQ);
                     return Ok(new { success = true, Message = "Registration Successfull", Data = data });                                                           
                 }
                 else

@@ -189,7 +189,7 @@ namespace ParkingLotProject.Controllers
             try
             {
                 var data = parkingLotBusiness.GetAllUnParkedCarDetail();
-                
+            
                 if (data == null)
                 {
                     return Ok(new { success = false, message = "data not found" });

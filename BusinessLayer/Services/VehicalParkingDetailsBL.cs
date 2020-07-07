@@ -176,6 +176,7 @@ namespace BusinessLayer.Services
             try
             {
                 var data = parkingLotRL.GetAllUnParkedCarDetail();
+                
                 // Check IF Data Equal To Null 
                 if (data == null)
                 {
