@@ -18,7 +18,7 @@ namespace BusinessLayer.Interface
         object DeleteUserRecord(int UserID);
 
         //Method to update User record by Id
-        Object UpdateUserRecord(int UserId, UserDetails details);
+        Object UpdateUserRecord(int UserId, UserRegistration details);
 
         //Method to View All the records
         List<UserDetails> GetAllUserDetails();

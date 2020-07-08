@@ -41,8 +41,6 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                
-
                 string password = user.Password;
                 UserRegistration data = _BusinessLayer.register(user);                    
                 if (!data.Equals(null))
@@ -129,9 +127,9 @@ namespace ParkingLotProject.Controllers
 
         //Method to Update user data by UserId
         [Authorize(Roles = "Owner")]
-        [Route("")]
+        [Route("{UserId}")]
         [HttpPut]
-        public IActionResult UpdateUserRecord(int UserId, UserDetails details)
+        public IActionResult UpdateUserRecord(int UserId, UserRegistration details)
         {
             try
             {
@@ -186,6 +184,7 @@ namespace ParkingLotProject.Controllers
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Role, responseData.UserTypes));
                 claims.Add(new Claim("Email", responseData.Email.ToString()));
+                claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
                 
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],

@@ -87,7 +87,7 @@ namespace BusinessLayer.Services
         }
 
         //Method to update user record by Id
-        public object UpdateUserRecord(int UserId, UserDetails details)
+        public object UpdateUserRecord(int UserId, UserRegistration details)
         {
             try
             {

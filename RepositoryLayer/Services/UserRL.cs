@@ -137,7 +137,7 @@ namespace RepositoryLayer.Services
         }
 
         //Method to update user record by id
-        public object UpdateUserRecord(int UserId, UserDetails details)
+        public object UpdateUserRecord(int UserId, UserRegistration details)
         {
             try
             {
