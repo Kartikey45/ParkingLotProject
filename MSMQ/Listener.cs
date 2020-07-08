@@ -1,35 +1,111 @@
-﻿using Experimental.System.Messaging;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Experimental.System.Messaging;
 
 namespace MSMQ
 {
+    //delegate initialized
+    public delegate void MessageReceivedEventHandler(object sender, MessageEventArgs args);
+
     public class Listener
     {
-        public static void Main(string[] args)
+        private bool _listen;
+        MessageQueue _queue;
+
+        //Event declared
+        public event MessageReceivedEventHandler MessageReceived;
+
+        //constructor define
+        public Listener(string queuePath)
         {
-            //create object of smtp class 
-            SMTP smtp = new SMTP();
+            _queue = new MessageQueue(queuePath);
+        }
 
-            Console.WriteLine("Message : ");
+        //Method for receiving data from msmq
+        private void StartListening()
+        {
+            if (!_listen)
+            {
+                return;
+            }
 
-            // Message queue
-            MessageQueue MyQueue;
+            // The MSMQ class does not have a BeginRecieve method that can take in a 
+            // MSMQ transaction object. This is a workaround – we do a BeginPeek and then 
+            // recieve the message synchronously in a transaction.
+            if (_queue.Transactional)
+            {
+                _queue.BeginPeek();
+            }
+            else
+            {
+                _queue.BeginReceive();
 
-            MyQueue = new MessageQueue(@".\Private$\MyQueue");
+            }
+        }
 
-            //message recieve from the Queue
-            Message MyMessage = MyQueue.Receive();
+        // method for sending mail 
+        private void FireRecieveEvent(object body)
+        {
+            SMTP Mail = new SMTP();
 
-            //Message in binary formate
-            MyMessage.Formatter = new BinaryMessageFormatter();
+            if (MessageReceived != null)
+            {
+                MessageReceived(this, new MessageEventArgs(body));
+                string message = body.ToString();
+                Mail.SendMail(message);
+            }
+        }
 
-            //Mail send 
-            smtp.SendMail(MyMessage.Body.ToString());
+        //method for recieving data from queue
+        private void OnReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
+        {
+            Message msg = _queue.EndReceive(e.AsyncResult);
 
-            //Print message of the body
-            Console.WriteLine(MyMessage.Body.ToString());
+            StartListening();
 
-            Console.ReadLine();
+            FireRecieveEvent(msg.Body);
+        }
+
+        
+        private void OnPeekCompleted(object sender, PeekCompletedEventArgs e)
+        {
+            _queue.EndPeek(e.AsyncResult);
+            MessageQueueTransaction trans = new MessageQueueTransaction();
+            Message msg = null;
+            try
+            {
+                trans.Begin();
+                msg = _queue.Receive(trans);
+                trans.Commit();
+
+                StartListening();
+
+                FireRecieveEvent(msg.Body);
+            }
+            catch
+            {
+                trans.Abort();
+            }
+        }
+
+        public void Start()
+        {
+            _listen = true;
+
+            _queue.Formatter = new BinaryMessageFormatter();
+            _queue.PeekCompleted += new PeekCompletedEventHandler(OnPeekCompleted);
+            _queue.ReceiveCompleted += new ReceiveCompletedEventHandler(OnReceiveCompleted);
+
+            StartListening();
+        }
+
+        public void Stop()
+        {
+            _listen = false;
+            _queue.PeekCompleted -= new PeekCompletedEventHandler(OnPeekCompleted);
+            _queue.ReceiveCompleted -= new ReceiveCompletedEventHandler(OnReceiveCompleted);
         }
     }
 }

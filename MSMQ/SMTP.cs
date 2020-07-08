@@ -12,7 +12,7 @@ namespace MSMQ
         public IConfiguration Configuration;
 
         //Method for sending mail 
-        public void SendMail(string data)
+        public void SendMail( string data)
         {
             try
             {

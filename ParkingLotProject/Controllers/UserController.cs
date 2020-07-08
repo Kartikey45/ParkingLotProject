@@ -55,7 +55,7 @@ namespace ParkingLotProject.Controllers
                     
                     string MSMQ = "\n First Name : " + Convert.ToString(user.FirstName) + "\n Last Name : " + Convert.ToString(user.LastName) +
                                     "\n User Role : " + Convert.ToString(user.UserType) + 
-                                    "\n Email : " + Convert.ToString(user.Email) + "\n Password : " + Convert.ToString(user.Password);
+                                    "\n Email : " + Convert.ToString(user.Email);
                     sender.Message(MSMQ);
                     return Ok(new { success = true, Message = "Registration Successfull", Data = data });                                                           
                 }
