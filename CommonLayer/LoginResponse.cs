@@ -9,5 +9,7 @@ namespace CommonLayer
         public string Email { get; set; }
 
         public string UserRole { get; set; }
+
+        public string JwtToken { get; set; }
     }
 }

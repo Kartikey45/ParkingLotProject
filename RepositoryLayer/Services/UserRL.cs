@@ -20,7 +20,7 @@ namespace RepositoryLayer.Services
         }
 
         //method to register user
-        public UserDetails AddUser(UserDetails user)
+        public UserRegistration AddUser(UserRegistration user)
         {
             try
             {
@@ -41,15 +41,13 @@ namespace RepositoryLayer.Services
                     throw new Exception("User Already Exist");
                 }
 
-                //model class attributes
-                UserDetails details = new UserDetails
+                UserDetails details = new UserDetails()
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
                     UserType = user.UserType,
                     Password = user.Password
-                    
                 };
 
                 //Adding new user data in the database

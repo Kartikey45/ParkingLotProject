@@ -37,12 +37,14 @@ namespace ParkingLotProject.Controllers
         //method to register new user
         [Route("Register")]
         [HttpPost]
-        public IActionResult RegisterUser( UserDetails user)
+        public IActionResult RegisterUser( UserRegistration user)
         {
             try
             {
+                
+
                 string password = user.Password;
-                UserDetails data = _BusinessLayer.register(user);                    
+                UserRegistration data = _BusinessLayer.register(user);                    
                 if (!data.Equals(null))
                 {
                     RegistrationResponse Data = new RegistrationResponse
@@ -78,16 +80,17 @@ namespace ParkingLotProject.Controllers
             try
             {
                 UserLogin data = _BusinessLayer.Login(user);
-
+                string JsonToken = CreateToken(data, "AuthenticateUserRole");
                 if (data != null)
                 {
                     LoginResponse Data = new LoginResponse
                     {
                         UserRole = user.UserTypes,
-                        Email = user.Email
+                        Email = user.Email,
+                        JwtToken = JsonToken
                     };
-                    string JsonToken = CreateToken(data, "AuthenticateUserRole");
-                    return Ok(new { success = true, Message = "Login successfull", Data = Data, JsonToken});                  
+                   
+                    return Ok(new { success = true, Message = "Login successfull", Data = Data });                  
                 }
                 else
                 {

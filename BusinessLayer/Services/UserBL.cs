@@ -63,7 +63,7 @@ namespace BusinessLayer.Services
         }
 
         //method to register new user
-        public UserDetails register(UserDetails user)
+        public UserRegistration register(UserRegistration user)
         {
             try
             {
