@@ -62,7 +62,7 @@ namespace BusinessLayer.Services
                 if (data == null)
                 {
                     // IF Data Null Throw Exception
-                    throw new Exception();
+                    return data;
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace BusinessLayer.Services
                 var data = parkingLotRL.DeleteCarParkingDetails(ParkingID);
                 if (data == null)
                 {
-                    throw new Exception();
+                    return null;
                 }
                 else
                 {

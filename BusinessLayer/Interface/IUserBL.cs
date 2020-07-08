@@ -23,5 +23,6 @@ namespace BusinessLayer.Interface
         //Method to View All the records
         List<UserDetails> GetAllUserDetails();
 
+
     }
 }

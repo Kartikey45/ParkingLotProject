@@ -1,6 +1,5 @@
 using System;
 using Xunit;
-using Moq;
 using ParkingLotProject.Controllers;
 using RepositoryLayer.Interface;
 using BusinessLayer.Interface;
@@ -17,6 +16,7 @@ using Xunit.Sdk;
 using CommonLayer;
 using System.ComponentModel;
 using CommonLayer.Response;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ParkingLotXUnitTestCases
 {
@@ -34,7 +34,8 @@ namespace ParkingLotXUnitTestCases
 
         //Instance of Configuration 
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
-        
+        private readonly IDistributedCache distributedCache;
+
         // Instance of DbContextOptions
         public static DbContextOptions<ParkingLotDbContext> dbContextOptions { get; }
 
@@ -61,31 +62,8 @@ namespace ParkingLotXUnitTestCases
             _IUserRL = new UserRL(context);
             _IUserBL = new UserBL(_IUserRL);
 
-            parkingController = new ParkingController(_IVehicalParkingDetailsBL);
+            parkingController = new ParkingController(_IVehicalParkingDetailsBL, distributedCache);
             userController = new UserController(_IUserBL, configuration);
-        }
-
-        //Parking vehical returns ok result
-        [Fact]
-        public void ParkingCarInLot_ReturnsOkResult()
-        {
-
-            ParkingInformation details = new ParkingInformation()
-            {
-                VehicleOwnerName = "Abhijit",
-                VehicleNumber = "MP 67 MB 2817",
-                VehicalBrand = "Honda",
-                VehicalColor = "Black",
-                DriverName = "Harshit",
-                ParkingUserCategory = "Handicap"
-
-            };
-
-            // Act
-            var okResult = parkingController.ParkingCarInLot(details);
-
-            // Assert
-            Assert.IsType<OkObjectResult>(okResult);
         }
 
         //Parking vehical returns bad request
@@ -114,35 +92,11 @@ namespace ParkingLotXUnitTestCases
         public void CarUnPark_ReturnOKResult()
         {
 
-            VehicalUnpark details = new VehicalUnpark()
-            {
-                ParkingID = 50
-
-            };
-
             // Act
-            var okResult = parkingController.CarUnPark(47);
+            var okResult = parkingController.CarUnPark(59);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);
-        }
-
-        //Unpark a vehical return bad request
-        [Fact]
-        public void CarUnPark_ReturnBadRequest()
-        {
-
-            VehicalUnpark details = new VehicalUnpark()
-            {
-                ParkingID = 99
-
-            };
-
-            // Act
-            var badRequest = parkingController.CarUnPark(258);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(badRequest);
         }
 
         //Delete parking details  by id returns ok result
@@ -150,37 +104,25 @@ namespace ParkingLotXUnitTestCases
         public void DeleteParkingDetails_ReturnOKResult()
         {
             // Act
-            var okResult = parkingController.DeleteCarParkingDetails(50);
+            var okResult = parkingController.DeleteCarParkingDetails(59);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);
-        }
-
-        //Delete parking details  by id returns bad request
-        [Fact]
-        public void DeleteParkingDetails_ReturnBadRequest()
-        {
-
-            // Act
-            var badRequest = parkingController.DeleteCarParkingDetails(258);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(badRequest);
         }
 
         //user login returns bad request due to Encrypted password
         [Fact]
         public void UserLogin_ReturnBadRequestDueToEncryptedPassword()
         {
-            UserController controller = new UserController(_IUserBL, configuration);
+            //UserController controller = new UserController(_IUserBL, configuration);
 
-            string password = EncryptedPassword.EncodePasswordToBase64("kartikey@123");
+            //string password = EncryptedPassword.EncodePasswordToBase64("kartikey@123");
 
             UserLogin details = new UserLogin()
             {
                 UserTypes = "Owner",
                 Email = "kartikey@gmail.com",
-                Password = password
+                Password = "kartikey@123"
             };
             
             // Act
@@ -195,7 +137,7 @@ namespace ParkingLotXUnitTestCases
         public void UserRegistration_ReturnOKResult()
         {
 
-            var details = new UserDetails()
+            var details = new UserRegistration()
             {
                 FirstName = "Garvit",
                 LastName = "Kumar",
@@ -216,7 +158,7 @@ namespace ParkingLotXUnitTestCases
         public void UserRegistration_ReturnBadRequest()
         {
 
-            var details = new UserDetails()
+            var details = new UserRegistration()
             {
                 FirstName = "Garvit",
                 LastName = "Juneja",
@@ -228,6 +170,25 @@ namespace ParkingLotXUnitTestCases
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(badRequest);
+        }
+
+        [Fact]
+        public void UpdateUserDetails_Returns_OkResult()
+        {
+            var details = new UserRegistration()
+            {
+                FirstName = "Garvit",
+                LastName = "Kumar",
+                Email = "garvit@gmail.com",
+                UserType = "Security",
+                Password = "garvit@123",
+            };
+
+            //act
+            var okResult = userController.UpdateUserRecord(27, details);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(okResult);
         }
 
         //Get all user details returns ok result
@@ -246,7 +207,7 @@ namespace ParkingLotXUnitTestCases
         public void DeleteUserDetails_ReturnsOkResult()
         {
             // Act
-            var okResult = userController.DeleteUserRecord(19);
+            var okResult = userController.DeleteUserRecord(32);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);
@@ -296,16 +257,6 @@ namespace ParkingLotXUnitTestCases
             Assert.IsType<OkObjectResult>(okResult);
         }
 
-        //get details by vehical number returns bad request
-        [Fact]
-        public void GetCarDetailsByVehicleNumber_ReturnsBadRequest()
-        {
-            //Act
-            var badresult = parkingController.GetCarDetailsByVehicleNumber("");
-
-            //Assert
-            Assert.IsType<BadRequestObjectResult>(badresult);
-        }
 
         //get details by parking slot returns ok result
         [Fact]
@@ -318,16 +269,6 @@ namespace ParkingLotXUnitTestCases
             Assert.IsType<OkObjectResult>(okResult);
         }
 
-        //get details by parking slot returns bad request
-        [Fact]
-        public void GetCarDetailsByParkingSlot_ReturnsBadResult()
-        {
-            //Act
-            var badResult = parkingController.GetCarDetailsByParkingSlot("");
-
-            //Assert
-            Assert.IsType<BadRequestObjectResult>(badResult);
-        }
 
         //get details by vehical brand returns ok result
         [Fact]
@@ -340,16 +281,6 @@ namespace ParkingLotXUnitTestCases
             Assert.IsType<OkObjectResult>(okResult);
         }
 
-        //get details by vehical brand returns bad request
-        [Fact]
-        public void GetCarDetailsByVehicleBrand_ReturnsBadRequest()
-        {
-            //Act
-            var badRequest = parkingController.GetCarDetailsByVehicleBrand("");
-
-            //Assert
-            Assert.IsType<BadRequestObjectResult>(badRequest);
-        }
 
         //get car details of handicap users returns ok result
         [Fact]
@@ -373,16 +304,6 @@ namespace ParkingLotXUnitTestCases
             Assert.IsType<OkObjectResult>(okResult);
         }
 
-        //get car details by its color returns bad request
-        [Fact]
-        public void GetAllCarDetailsByColor_ReturnsBadRequest()
-        {
-            //Act
-            var badRequest = parkingController.GetAllCarDetailsByColor("");
-
-            //Assert
-            Assert.IsType<BadRequestObjectResult>(badRequest);
-        }
     }
 }
 

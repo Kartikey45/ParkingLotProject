@@ -57,7 +57,7 @@ namespace RepositoryLayer.Services
                 dbContext.SaveChanges();
 
                 //return valid user data
-                if(Result != null)
+                if (Result != null)
                 {
                     return user;
                 }
@@ -66,7 +66,7 @@ namespace RepositoryLayer.Services
                     throw new Exception("User Not Registered");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -92,7 +92,7 @@ namespace RepositoryLayer.Services
                     throw new Exception();
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -114,7 +114,7 @@ namespace RepositoryLayer.Services
 
                 //password encrypted
                 string Password = EncryptedPassword.EncodePasswordToBase64(user.Password);
-                
+
 
                 //User category 
                 string UserType = user.UserTypes;
@@ -130,7 +130,7 @@ namespace RepositoryLayer.Services
                     throw new Exception("Login failed");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }

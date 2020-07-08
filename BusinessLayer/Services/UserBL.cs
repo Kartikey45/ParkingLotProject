@@ -46,7 +46,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var Result = parkingLot.Login(user);                               
+                var Result = parkingLot.Login(user);
                 if (Result != null)
                 {
                     return user;
@@ -56,7 +56,7 @@ namespace BusinessLayer.Services
                     throw new Exception("Login Failed");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -71,7 +71,7 @@ namespace BusinessLayer.Services
                 string Encrypted = user.Password;
                 user.Password = EncryptedPassword.EncodePasswordToBase64(Encrypted);
                 var Result = parkingLot.AddUser(user);
-                if(!Result.Equals(null))
+                if (!Result.Equals(null))
                 {
                     return user;
                 }

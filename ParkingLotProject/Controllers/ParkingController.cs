@@ -60,7 +60,7 @@ namespace ParkingLotProject.Controllers
 
                 if (list == null)
                 {
-                    return Ok(new { success = false, message = "Parking Lot is Empty" });
+                    return Ok(new { success = true, message = "Parking Lot is Empty" });
                 }
                 else
                 {

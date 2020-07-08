@@ -342,7 +342,7 @@ namespace RepositoryLayer.Services
                 {
                     // If Data Not Found
                     //   return ReceiptNumber + " This Receipt Number Not Found";
-                    throw new Exception();
+                    return null;
                 }
             }
             catch (Exception e)
