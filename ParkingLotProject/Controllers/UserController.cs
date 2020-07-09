@@ -84,6 +84,7 @@ namespace ParkingLotProject.Controllers
                     LoginResponse Data = new LoginResponse
                     {
                         UserRole = user.UserTypes,
+                        UserId = user.UserId,
                         Email = user.Email,
                         JwtToken = JsonToken
                     };
@@ -184,6 +185,7 @@ namespace ParkingLotProject.Controllers
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Role, responseData.UserTypes));
                 claims.Add(new Claim("Email", responseData.Email.ToString()));
+                claims.Add(new Claim("UserId", responseData.UserId.ToString()));
                 claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
                 
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],

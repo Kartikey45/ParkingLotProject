@@ -8,6 +8,9 @@ namespace CommonLayer
     //class for login
     public class UserLogin
     {
+        [Required(ErrorMessage = "UserType Is Required")]
+        public int UserId { get; set; }
+
         //User Type
         [Required(ErrorMessage = "UserType Is Required")]
         [MaxLength(50)]

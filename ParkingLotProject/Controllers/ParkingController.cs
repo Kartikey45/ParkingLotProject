@@ -167,16 +167,16 @@ namespace ParkingLotProject.Controllers
                 if (data != null)
                 {
                     distributedCache.Remove(CacheKey);
-                    return Ok(new { success = true, message = "successfully unparked", Data = data });
+                    return Ok(new { success = "true", message = "successfully unparked", Data = data });
                 }
                 else
                 {
-                    return Ok(new { success = false, message = "failed to unpark" });
+                    return Ok(new { success = "false", message = "failed to unpark" });
                 }
             }
             catch (Exception e)
             {
-                return Ok(new { success = false, message = e.Message });
+                return BadRequest(new { success = "false", message = e.Message });
             }
         }
 
@@ -201,7 +201,7 @@ namespace ParkingLotProject.Controllers
             }
             catch (Exception e)
             {
-                return Ok(new { success = false, message = e.Message});
+                return BadRequest(new { success = false, message = e.Message});
             }
         }
 
@@ -247,7 +247,7 @@ namespace ParkingLotProject.Controllers
             }
             catch (Exception exception)
             {
-                return Ok(new { success = false, message = exception.Message });
+                return BadRequest(new { success = false, message = exception.Message });
             }
         }
 
@@ -259,41 +259,20 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                var cacheKey = Slot;
-
-                List<ParkingLotDetails> list;
-                string serializedList;
-
-                var encodedList = distributedCache.Get(cacheKey);
-
-                if (encodedList != null)
-                {
-                    serializedList = Encoding.UTF8.GetString(encodedList);
-                    list = JsonConvert.DeserializeObject<List<ParkingLotDetails>>(serializedList);
-                }
-                else
-                {
-                    list = parkingLotBusiness.GetCarDetailsByParkingSlot(Slot);
-                    serializedList = JsonConvert.SerializeObject(list);
-                    encodedList = Encoding.UTF8.GetBytes(serializedList);
-                    var options = new DistributedCacheEntryOptions()
-                                    .SetSlidingExpiration(TimeSpan.FromMinutes(20))
-                                    .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
-                    distributedCache.Set(cacheKey, encodedList, options);
-                }
-
-                if (list == null)
+                var data = parkingLotBusiness.GetCarDetailsByParkingSlot(Slot);
+               
+                if (data == null)
                 {
                     return Ok(new { success = false, message = "details not found"});
                 }
                 else
                 {
-                    return Ok(new { success = true, message = "details found successfully", Data = list });
+                    return Ok(new { success = true, message = "details found successfully", Data = data });
                 }
             }
             catch (Exception exception)
             {
-                return Ok(new { success = true, message = exception.Message });
+                return BadRequest(new { success = true, message = exception.Message });
             }
         }
 
@@ -305,41 +284,20 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                var cacheKey = VehicalBrand;
+                var data = parkingLotBusiness.GetCarDetailsByVehicleBrand(VehicalBrand); ;
 
-                List<ParkingLotDetails> list;
-                string serializedList;
-
-                var encodedList = distributedCache.Get(cacheKey);
-
-                if (encodedList != null)
-                {
-                    serializedList = Encoding.UTF8.GetString(encodedList);
-                    list = JsonConvert.DeserializeObject<List<ParkingLotDetails>>(serializedList);
-                }
-                else
-                {
-                    list = parkingLotBusiness.GetCarDetailsByVehicleBrand(VehicalBrand);
-                    serializedList = JsonConvert.SerializeObject(list);
-                    encodedList = Encoding.UTF8.GetBytes(serializedList);
-                    var options = new DistributedCacheEntryOptions()
-                                    .SetSlidingExpiration(TimeSpan.FromMinutes(20))
-                                    .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
-                    distributedCache.Set(cacheKey, encodedList, options);
-                }
-
-                if (list == null)
+                if (data == null)
                 {
                     return Ok(new { success = false, message = "details not found" });
                 }
                 else
                 {
-                    return Ok(new { success = true, message = "details found successfully", Data = list });
+                    return Ok(new { success = true, message = "details found successfully", Data = data });
                 }
             }
             catch (Exception ex)
             {
-                return Ok(new { success = false, message = ex.Message });
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -351,30 +309,8 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                string key = "handicap";
-                var cacheKey = key;
-
-                List<ParkingLotDetails> list;
-                string serializedList;
-
-                var encodedList = distributedCache.Get(cacheKey);
-
-                if (encodedList != null)
-                {
-                    serializedList = Encoding.UTF8.GetString(encodedList);
-                    list = JsonConvert.DeserializeObject<List<ParkingLotDetails>>(serializedList);
-                }
-                else
-                {
-                    list = parkingLotBusiness.GetAllCarDetailsOfHandicap();
-                    serializedList = JsonConvert.SerializeObject(list);
-                    encodedList = Encoding.UTF8.GetBytes(serializedList);
-                    var options = new DistributedCacheEntryOptions()
-                                    .SetSlidingExpiration(TimeSpan.FromMinutes(20))
-                                    .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
-                    distributedCache.Set(cacheKey, encodedList, options);
-                }
-
+                var list = parkingLotBusiness.GetAllCarDetailsOfHandicap();
+                
                 if (list == null)
                 {
                     return Ok(new { success = false, message = "No details found" });
@@ -386,7 +322,7 @@ namespace ParkingLotProject.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { success = false, message = ex.Message });
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -398,29 +334,8 @@ namespace ParkingLotProject.Controllers
         {
             try
             {
-                var cacheKey = Color;
-
-                List<ParkingLotDetails> list;
-                string serializedList;
-
-                var encodedList = distributedCache.Get(cacheKey);
-
-                if (encodedList != null)
-                {
-                    serializedList = Encoding.UTF8.GetString(encodedList);
-                    list = JsonConvert.DeserializeObject<List<ParkingLotDetails>>(serializedList);
-                }
-                else
-                {
-                    list = parkingLotBusiness.GetAllCarDetailsByColor(Color);
-                    serializedList = JsonConvert.SerializeObject(list);
-                    encodedList = Encoding.UTF8.GetBytes(serializedList);
-                    var options = new DistributedCacheEntryOptions()
-                                    .SetSlidingExpiration(TimeSpan.FromMinutes(20))
-                                    .SetAbsoluteExpiration(DateTime.Now.AddHours(6));
-                    distributedCache.Set(cacheKey, encodedList, options);
-                }
-
+                var list = parkingLotBusiness.GetAllCarDetailsByColor(Color);
+               
                 if (list == null)
                 {
                     return Ok(new { success = false, message = "details not found" });
@@ -432,7 +347,7 @@ namespace ParkingLotProject.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { success = true, message = ex.Message });
+                return BadRequest(new { success = true, message = ex.Message });
             }
         }
     }

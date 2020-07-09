@@ -71,7 +71,6 @@ namespace ParkingLotXUnitTestCases
         public void ParkingCarInLot_ReturnsBadRequest()
         {
 
-
             ParkingInformation details = new ParkingInformation()
             {
                 VehicleOwnerName = "Sahil",
@@ -91,12 +90,11 @@ namespace ParkingLotXUnitTestCases
         [Fact]
         public void CarUnPark_ReturnOKResult()
         {
-
             // Act
-            var okResult = parkingController.CarUnPark(59);
+            var data = parkingController.CarUnPark(42);
 
             // Assert
-            Assert.IsType<OkObjectResult>(okResult);
+            Assert.IsType<OkObjectResult>(data);
         }
 
         //Delete parking details  by id returns ok result
@@ -104,7 +102,7 @@ namespace ParkingLotXUnitTestCases
         public void DeleteParkingDetails_ReturnOKResult()
         {
             // Act
-            var okResult = parkingController.DeleteCarParkingDetails(59);
+            var okResult = parkingController.DeleteCarParkingDetails(53);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult);

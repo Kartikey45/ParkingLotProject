@@ -111,16 +111,16 @@ namespace RepositoryLayer.Services
 
                 //variable declared
                 string Email = user.Email;
+                int UserId = user.UserId;
 
                 //password encrypted
                 string Password = EncryptedPassword.EncodePasswordToBase64(user.Password);
-
 
                 //User category 
                 string UserType = user.UserTypes;
 
                 //Validating Login details
-                var Result = dbContext.UserDetails.Where(v => v.Email == Email && v.Password == Password && v.UserType == UserType).FirstOrDefault();
+                var Result = dbContext.UserDetails.Where(v => v.ID == UserId && v.Email == Email && v.Password == Password && v.UserType == UserType).FirstOrDefault();
                 if (Result != null)
                 {
                     return user;
